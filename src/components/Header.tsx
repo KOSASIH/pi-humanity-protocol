@@ -9,13 +9,14 @@ import {
   CheckCircle2, 
   Smartphone,
   Building2,
-  Activity
+  Activity,
+  Layers
 } from "lucide-react";
 import { PioneerUser } from "../types";
 
 interface HeaderProps {
-  currentTab: "pioneer" | "company" | "god_console" | "api";
-  setCurrentTab: (tab: "pioneer" | "company" | "god_console" | "api") => void;
+  currentTab: "pioneer" | "company" | "god_console" | "explorer" | "api";
+  setCurrentTab: (tab: "pioneer" | "company" | "god_console" | "explorer" | "api") => void;
   pioneer: PioneerUser;
   isPiBrowser: boolean;
   onClaimPayout?: () => void;
@@ -95,6 +96,19 @@ export const Header: React.FC<HeaderProps> = ({
             >
               <Activity className="w-3.5 h-3.5" />
               God Console
+            </button>
+
+            <button
+              id="nav-explorer-tab"
+              onClick={() => setCurrentTab("explorer")}
+              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+                currentTab === "explorer"
+                  ? "bg-amber-500 text-slate-950 shadow-md shadow-amber-500/20"
+                  : "text-slate-300 hover:text-white hover:bg-slate-800/60"
+              }`}
+            >
+              <Layers className="w-3.5 h-3.5" />
+              Explorer & Oracle
             </button>
 
             <button
@@ -195,6 +209,15 @@ export const Header: React.FC<HeaderProps> = ({
           >
             <Activity className="w-3.5 h-3.5" />
             God Console
+          </button>
+          <button
+            onClick={() => setCurrentTab("explorer")}
+            className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold whitespace-nowrap ${
+              currentTab === "explorer" ? "bg-amber-500 text-slate-950" : "text-slate-400 hover:bg-slate-900"
+            }`}
+          >
+            <Layers className="w-3.5 h-3.5" />
+            Explorer
           </button>
           <button
             onClick={() => setCurrentTab("api")}

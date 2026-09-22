@@ -202,6 +202,30 @@ console.log(data);`;
             <span className="text-slate-400 text-[11px]">Server-side Pi Auth Step 2 token verification</span>
           </div>
 
+          <div className="bg-slate-950 p-3 rounded-lg border border-slate-800 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <span className="px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 font-bold">GET</span>
+              <span className="text-white">/api/v1/verify/:certHash</span>
+            </div>
+            <span className="text-slate-400 text-[11px]">Public Oracle verification for AI Act compliance</span>
+          </div>
+
+          <div className="bg-slate-950 p-3 rounded-lg border border-slate-800 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <span className="px-2 py-0.5 rounded bg-blue-500/20 text-blue-300 font-bold">GET</span>
+              <span className="text-white">/api/v1/network/blocks</span>
+            </div>
+            <span className="text-slate-400 text-[11px]">Pi Network Byzantine consensus ledger blocks</span>
+          </div>
+
+          <div className="bg-slate-950 p-3 rounded-lg border border-slate-800 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <span className="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold">GET</span>
+              <span className="text-white">/api/v1/network/nodes</span>
+            </div>
+            <span className="text-slate-400 text-[11px]">Global KYC cluster telemetry across 230 countries</span>
+          </div>
+
         </div>
       </div>
     </div>

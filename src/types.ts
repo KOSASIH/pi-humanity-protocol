@@ -78,6 +78,7 @@ export interface HumanTask {
   status: 'escrow_locked' | 'in_progress' | 'consensus_reached' | 'settled';
   completedItemsCount: number;
   createdAt: string;
+  consensusReachedAt?: string;
   items: TaskItem[];
   proofCertificateHash?: string;
   ipfsCid?: string;
@@ -107,6 +108,30 @@ export interface ProofCertificate {
   }[];
 }
 
+export interface BlockEvent {
+  blockNumber: number;
+  hash: string;
+  txCount: number;
+  timestamp: string;
+  validatorNode: string;
+  piRewardDistributed: number;
+  consensusType: string;
+  kycQuorumSize: number;
+}
+
+export interface VerificationNode {
+  id: string;
+  city: string;
+  country: string;
+  countryCode: string;
+  flag: string;
+  verifiedPioneers: string;
+  activeNodes: number;
+  latencyMs: number;
+  consensusRate: number;
+  languages: string[];
+}
+
 export interface ProtocolStats {
   totalVerifiedHumans: number; // 60,000,000+
   tasksToday: number;
@@ -115,6 +140,8 @@ export interface ProtocolStats {
   escrowLockedPi: number;
   activeWorkersOnline: number;
   avgConsensusSeconds: number;
+  latestBlock: number;
+  piNetworkMainnetStatus: 'HEALTHY' | 'SYNCED';
   liveActivityPings: {
     id: string;
     pioneer: string;

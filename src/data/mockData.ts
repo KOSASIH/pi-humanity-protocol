@@ -266,6 +266,8 @@ export const INITIAL_PROTOCOL_STATS: ProtocolStats = {
   escrowLockedPi: 48920.0,
   activeWorkersOnline: 184320,
   avgConsensusSeconds: 4.8,
+  latestBlock: 1894218,
+  piNetworkMainnetStatus: 'SYNCED',
   liveActivityPings: [
     {
       id: "ping_1",
@@ -329,3 +331,145 @@ export const INITIAL_PROTOCOL_STATS: ProtocolStats = {
     }
   ]
 };
+
+export const INITIAL_VERIFICATION_NODES: import('../types').VerificationNode[] = [
+  {
+    id: "node_id_jkt",
+    city: "Jakarta",
+    country: "Indonesia",
+    countryCode: "ID",
+    flag: "🇮🇩",
+    verifiedPioneers: "7,140,200",
+    activeNodes: 14820,
+    latencyMs: 14,
+    consensusRate: 99.8,
+    languages: ["Indonesian", "Javanese", "Sundanese", "English"]
+  },
+  {
+    id: "node_in_mum",
+    city: "Mumbai",
+    country: "India",
+    countryCode: "IN",
+    flag: "🇮🇳",
+    verifiedPioneers: "12,420,000",
+    activeNodes: 28410,
+    latencyMs: 28,
+    consensusRate: 99.4,
+    languages: ["Hindi", "English", "Bengali", "Marathi", "Tamil"]
+  },
+  {
+    id: "node_ng_lag",
+    city: "Lagos",
+    country: "Nigeria",
+    countryCode: "NG",
+    flag: "🇳🇬",
+    verifiedPioneers: "4,820,000",
+    activeNodes: 11200,
+    latencyMs: 35,
+    consensusRate: 99.2,
+    languages: ["Yoruba", "Igbo", "Hausa", "Pidgin", "English"]
+  },
+  {
+    id: "node_br_sp",
+    city: "São Paulo",
+    country: "Brazil",
+    countryCode: "BR",
+    flag: "🇧🇷",
+    verifiedPioneers: "5,290,000",
+    activeNodes: 13950,
+    latencyMs: 22,
+    consensusRate: 99.5,
+    languages: ["Portuguese", "English", "Spanish"]
+  },
+  {
+    id: "node_vn_han",
+    city: "Hanoi",
+    country: "Vietnam",
+    countryCode: "VN",
+    flag: "🇻🇳",
+    verifiedPioneers: "3,980,000",
+    activeNodes: 9840,
+    latencyMs: 18,
+    consensusRate: 99.6,
+    languages: ["Vietnamese", "English"]
+  },
+  {
+    id: "node_ph_mnl",
+    city: "Manila",
+    country: "Philippines",
+    countryCode: "PH",
+    flag: "🇵🇭",
+    verifiedPioneers: "4,120,000",
+    activeNodes: 10400,
+    latencyMs: 24,
+    consensusRate: 99.7,
+    languages: ["Tagalog", "Cebuano", "English", "Ilocano"]
+  },
+  {
+    id: "node_us_nyc",
+    city: "New York",
+    country: "United States",
+    countryCode: "US",
+    flag: "🇺🇸",
+    verifiedPioneers: "2,840,000",
+    activeNodes: 8900,
+    latencyMs: 8,
+    consensusRate: 99.9,
+    languages: ["English", "Spanish", "Chinese", "French"]
+  },
+  {
+    id: "node_de_ber",
+    city: "Berlin",
+    country: "Germany",
+    countryCode: "DE",
+    flag: "🇩🇪",
+    verifiedPioneers: "1,940,000",
+    activeNodes: 5600,
+    latencyMs: 12,
+    consensusRate: 99.8,
+    languages: ["German", "English", "Turkish"]
+  }
+];
+
+export const INITIAL_BLOCK_EVENTS: import('../types').BlockEvent[] = [
+  {
+    blockNumber: 1894218,
+    hash: "0x7a8f9c12e34b5d6a7e8f90123456789abcdef0123456789abcdef0123456789a",
+    txCount: 84,
+    timestamp: "12s ago",
+    validatorNode: "pi_node_jakarta_01 (Kosasih Authority Cluster)",
+    piRewardDistributed: 67.2,
+    consensusType: "3-Node Byzantine Personhood Consensus",
+    kycQuorumSize: 252
+  },
+  {
+    blockNumber: 1894217,
+    hash: "0x4b5c6d7e8f90123456789abcdef0123456789abcdef0123456789abcdef01234",
+    txCount: 62,
+    timestamp: "24s ago",
+    validatorNode: "pi_node_mumbai_04",
+    piRewardDistributed: 49.6,
+    consensusType: "RLHF Alignment Quorum",
+    kycQuorumSize: 186
+  },
+  {
+    blockNumber: 1894216,
+    hash: "0x123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0",
+    txCount: 91,
+    timestamp: "36s ago",
+    validatorNode: "pi_node_lagos_02",
+    piRewardDistributed: 72.8,
+    consensusType: "Multimodal Deepfake Verification",
+    kycQuorumSize: 273
+  },
+  {
+    blockNumber: 1894215,
+    hash: "0x89abcdef0123456789abcdef0123456789abcdef0123456789abcdef01234567",
+    txCount: 54,
+    timestamp: "48s ago",
+    validatorNode: "pi_node_saopaulo_03",
+    piRewardDistributed: 43.2,
+    consensusType: "Native Idiom & Localization Quorum",
+    kycQuorumSize: 162
+  }
+];

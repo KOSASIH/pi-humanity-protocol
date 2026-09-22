@@ -3,6 +3,7 @@ import { Header } from "./components/Header";
 import { PioneerWorkerApp } from "./components/PioneerWorkerApp";
 import { CompanyTaskPortal } from "./components/CompanyTaskPortal";
 import { GodConsole } from "./components/GodConsole";
+import { ProtocolExplorer } from "./components/ProtocolExplorer";
 import { ApiPlayground } from "./components/ApiPlayground";
 import { piService } from "./services/piSdk";
 import { HumanTask, ProtocolStats, PioneerUser } from "./types";
@@ -10,7 +11,7 @@ import { INITIAL_PIONEER, INITIAL_PROTOCOL_STATS, INITIAL_TASKS } from "./data/m
 import confetti from "canvas-confetti";
 
 export default function App() {
-  const [currentTab, setCurrentTab] = useState<"pioneer" | "company" | "god_console" | "api">("pioneer");
+  const [currentTab, setCurrentTab] = useState<"pioneer" | "company" | "god_console" | "explorer" | "api">("pioneer");
   const [tasks, setTasks] = useState<HumanTask[]>(INITIAL_TASKS);
   const [stats, setStats] = useState<ProtocolStats>(INITIAL_PROTOCOL_STATS);
   const [pioneer, setPioneer] = useState<PioneerUser>(INITIAL_PIONEER);
@@ -198,6 +199,8 @@ export default function App() {
         )}
 
         {currentTab === "god_console" && <GodConsole stats={stats} />}
+
+        {currentTab === "explorer" && <ProtocolExplorer stats={stats} />}
 
         {currentTab === "api" && <ApiPlayground />}
       </main>

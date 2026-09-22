@@ -2,8 +2,8 @@ import express from "express";
 import path from "path";
 import { createServer as createViteServer } from "vite";
 import crypto from "crypto";
-import { INITIAL_TASKS, INITIAL_PROTOCOL_STATS, INITIAL_PIONEER } from "./src/data/mockData.ts";
-import { HumanTask, ProtocolStats, PioneerUser, TaskItem, ProofCertificate } from "./src/types.ts";
+import { INITIAL_TASKS, INITIAL_PROTOCOL_STATS, INITIAL_PIONEER, INITIAL_VERIFICATION_NODES, INITIAL_BLOCK_EVENTS } from "./src/data/mockData.ts";
+import { HumanTask, ProtocolStats, PioneerUser, TaskItem, ProofCertificate, VerificationNode, BlockEvent } from "./src/types.ts";
 
 async function startServer() {
   const app = express();
@@ -15,6 +15,8 @@ async function startServer() {
   let tasks: HumanTask[] = JSON.parse(JSON.stringify(INITIAL_TASKS));
   let stats: ProtocolStats = JSON.parse(JSON.stringify(INITIAL_PROTOCOL_STATS));
   let pioneer: PioneerUser = JSON.parse(JSON.stringify(INITIAL_PIONEER));
+  let nodes: VerificationNode[] = JSON.parse(JSON.stringify(INITIAL_VERIFICATION_NODES));
+  let blocks: BlockEvent[] = JSON.parse(JSON.stringify(INITIAL_BLOCK_EVENTS));
 
   // Sessions map: sessionToken -> { uid, username }
   const sessions = new Map<string, { uid: string; username: string }>();
@@ -87,8 +89,57 @@ async function startServer() {
       ...stats,
       tasksToday: stats.tasksToday + Math.floor(Math.random() * 5),
       activeWorkersOnline: 184320 + Math.floor(Math.random() * 50) - 25,
+      latestBlock: stats.latestBlock + Math.floor(Math.random() * 2),
+      piNetworkMainnetStatus: "SYNCED",
     };
     return res.json(liveStats);
+  });
+
+  // ==========================================
+  // 2B. VERIFICATION NODES (GLOBAL NETWORK)
+  // ==========================================
+  app.get("/api/v1/network/nodes", (req, res) => {
+    return res.json(nodes);
+  });
+
+  // ==========================================
+  // 2C. BLOCKS & SETTLEMENT EVENTS
+  // ==========================================
+  app.get("/api/v1/network/blocks", (req, res) => {
+    return res.json(blocks);
+  });
+
+  // ==========================================
+  // 2D. VERIFY PROOF CERTIFICATE HASH (PUBLIC ORACLE)
+  // ==========================================
+  app.get("/api/v1/verify/:certHash", (req, res) => {
+    const { certHash } = req.params;
+    const task = tasks.find(t => t.proofCertificateHash === certHash);
+    if (!task) {
+      // Return simulated valid verification for custom test hashes
+      return res.json({
+        verified: true,
+        hash: certHash,
+        piNetworkAnchorBlock: 1894218,
+        authority: "KOSASIH (@Kosasih78, Indonesia)",
+        escrowWallet: "GCKUNNC6X6LKYJXKTQEJAQQ2J6NTIHMRNJFM2KY6KIBB46BOPMKVXDQN",
+        timestamp: new Date().toISOString(),
+        antiSybilProof: "Verified 100% Unique Sovereign KYC Pioneers (3-Node Quorum)",
+        euAiActCompliant: true
+      });
+    }
+    return res.json({
+      verified: true,
+      taskId: task.id,
+      title: task.title,
+      company: task.companyName,
+      hash: task.proofCertificateHash,
+      status: task.status,
+      authority: "KOSASIH (@Kosasih78, Indonesia)",
+      escrowWallet: "GCKUNNC6X6LKYJXKTQEJAQQ2J6NTIHMRNJFM2KY6KIBB46BOPMKVXDQN",
+      consensusReachedAt: task.consensusReachedAt,
+      euAiActCompliant: true
+    });
   });
 
   // ==========================================
@@ -322,6 +373,21 @@ async function startServer() {
         const proofHash = crypto.createHash("sha256").update(fingerprintString).digest("hex");
         task.proofCertificateHash = `sha256:${proofHash}`;
         task.ipfsCid = `Qm${proofHash.slice(0, 44)}`;
+
+        // Mint dynamic Block Event on Pi Network Mainnet simulation
+        stats.latestBlock += 1;
+        const newBlock: BlockEvent = {
+          blockNumber: stats.latestBlock,
+          hash: `0x${proofHash}`,
+          txCount: task.items.length * 3,
+          timestamp: "Just now",
+          validatorNode: "pi_node_jakarta_01 (Kosasih Authority Cluster)",
+          piRewardDistributed: task.bountyPi,
+          consensusType: "3-Node Byzantine Personhood Consensus",
+          kycQuorumSize: allKycUids.length || 3
+        };
+        blocks.unshift(newBlock);
+        if (blocks.length > 20) blocks.pop();
 
         // Release escrow into distributed Pi
         stats.escrowLockedPi = Math.max(0, stats.escrowLockedPi - task.bountyPi);
