@@ -1,0 +1,6 @@
+{
+  "name": "Pi Humanity Protocol",
+  "description": "The Human Layer for AI: 60 Million Verified KYC Humans Powering AI Evaluation, Data Labeling, and Anti-Sybil Consensus.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
