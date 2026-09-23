@@ -6,13 +6,16 @@
 export type TabType = 
   | 'pioneer' 
   | 'company' 
+  | 'oracle'
+  | 'forensics'
+  | 'guardian'
+  | 'red_teaming' 
+  | 'zk_proof' 
+  | 'staking' 
+  | 'telemetry' 
+  | 'compliance' 
   | 'god_console' 
   | 'explorer' 
-  | 'staking' 
-  | 'compliance' 
-  | 'telemetry' 
-  | 'zk_proof' 
-  | 'red_teaming' 
   | 'api';
 
 export type KycTier = 'tier_1' | 'tier_2' | 'unverified';

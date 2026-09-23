@@ -10,6 +10,9 @@ import { ComplianceAuditor } from "./components/ComplianceAuditor";
 import { GlobalTelemetry } from "./components/GlobalTelemetry";
 import { ZkProofStudio } from "./components/ZkProofStudio";
 import { AiRedTeamingArena } from "./components/AiRedTeamingArena";
+import { AiTruthOracle } from "./components/AiTruthOracle";
+import { DeepfakeForensicLab } from "./components/DeepfakeForensicLab";
+import { AgentGuardianSandbox } from "./components/AgentGuardianSandbox";
 import { piService } from "./services/piSdk";
 import { HumanTask, ProtocolStats, PioneerUser, TabType } from "./types";
 import { INITIAL_PIONEER, INITIAL_PROTOCOL_STATS, INITIAL_TASKS } from "./data/mockData";
@@ -251,6 +254,51 @@ export default function App() {
             tasks={tasks}
             onCreateTask={handleCreateTask}
             refreshTasks={refreshTasks}
+          />
+        )}
+
+        {currentTab === "oracle" && (
+          <AiTruthOracle
+            pioneer={pioneer}
+            stats={stats}
+            onRewardClaim={(bounty) => {
+              setPioneer((prev) => ({
+                ...prev,
+                unpaidPiBalance: Number((prev.unpaidPiBalance + bounty).toFixed(2)),
+                piEarned: Number((prev.piEarned + bounty).toFixed(2)),
+                tasksCompleted: prev.tasksCompleted + 1,
+              }));
+            }}
+          />
+        )}
+
+        {currentTab === "forensics" && (
+          <DeepfakeForensicLab
+            pioneer={pioneer}
+            stats={stats}
+            onRewardClaim={(bounty) => {
+              setPioneer((prev) => ({
+                ...prev,
+                unpaidPiBalance: Number((prev.unpaidPiBalance + bounty).toFixed(2)),
+                piEarned: Number((prev.piEarned + bounty).toFixed(2)),
+                tasksCompleted: prev.tasksCompleted + 1,
+              }));
+            }}
+          />
+        )}
+
+        {currentTab === "guardian" && (
+          <AgentGuardianSandbox
+            pioneer={pioneer}
+            stats={stats}
+            onRewardClaim={(bounty) => {
+              setPioneer((prev) => ({
+                ...prev,
+                unpaidPiBalance: Number((prev.unpaidPiBalance + bounty).toFixed(2)),
+                piEarned: Number((prev.piEarned + bounty).toFixed(2)),
+                tasksCompleted: prev.tasksCompleted + 1,
+              }));
+            }}
           />
         )}
 
