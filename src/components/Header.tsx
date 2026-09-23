@@ -18,7 +18,12 @@ import {
   Flame,
   Sparkles,
   Video,
-  Bot
+  Bot,
+  Brain,
+  Languages,
+  Vote,
+  Database,
+  Network
 } from "lucide-react";
 import { PioneerUser, TabType } from "../types";
 
@@ -47,9 +52,15 @@ export const Header: React.FC<HeaderProps> = ({
     { id: "oracle", label: "Truth Oracle", icon: <Sparkles className="w-3.5 h-3.5 text-indigo-400" />, categoryColor: "indigo" },
     { id: "forensics", label: "Deepfake Lab", icon: <Video className="w-3.5 h-3.5 text-cyan-400" />, categoryColor: "cyan" },
     { id: "guardian", label: "Agent Guard", icon: <Bot className="w-3.5 h-3.5 text-emerald-400" />, categoryColor: "emerald" },
+    { id: "rlhf_studio", label: "RLHF Studio", icon: <Brain className="w-3.5 h-3.5 text-blue-400" />, categoryColor: "blue" },
+    { id: "cultural_matrix", label: "Cultural Matrix", icon: <Languages className="w-3.5 h-3.5 text-teal-400" />, categoryColor: "teal" },
+    { id: "distillery", label: "Data Distillery", icon: <Database className="w-3.5 h-3.5 text-amber-400" />, categoryColor: "amber" },
+    { id: "enclave", label: "TEE Enclave", icon: <Cpu className="w-3.5 h-3.5 text-indigo-400" />, categoryColor: "indigo" },
+    { id: "bridge", label: "Omni Bridge", icon: <Network className="w-3.5 h-3.5 text-sky-400" />, categoryColor: "sky" },
     { id: "red_teaming", label: "Red Team", icon: <Flame className="w-3.5 h-3.5 text-rose-400" />, categoryColor: "rose" },
     { id: "zk_proof", label: "zk-SNARK", icon: <EyeOff className="w-3.5 h-3.5 text-purple-400" />, categoryColor: "purple" },
     { id: "staking", label: "BFT Staking", icon: <ShieldAlert className="w-3.5 h-3.5 text-amber-400" /> },
+    { id: "governance", label: "DAO Gov", icon: <Vote className="w-3.5 h-3.5 text-amber-400" /> },
     { id: "telemetry", label: "Node Map", icon: <Globe2 className="w-3.5 h-3.5 text-teal-400" /> },
     { id: "compliance", label: "EU AI Act", icon: <Scale className="w-3.5 h-3.5 text-blue-400" /> },
     { id: "god_console", label: "God Console", icon: <Activity className="w-3.5 h-3.5 text-yellow-400" /> },

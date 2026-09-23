@@ -13,6 +13,12 @@ import { AiRedTeamingArena } from "./components/AiRedTeamingArena";
 import { AiTruthOracle } from "./components/AiTruthOracle";
 import { DeepfakeForensicLab } from "./components/DeepfakeForensicLab";
 import { AgentGuardianSandbox } from "./components/AgentGuardianSandbox";
+import { FederatedRlhfStudio } from "./components/FederatedRlhfStudio";
+import { GovernanceDao } from "./components/GovernanceDao";
+import { CulturalLinguisticMatrix } from "./components/CulturalLinguisticMatrix";
+import { SyntheticDataDistillery } from "./components/SyntheticDataDistillery";
+import { ConfidentialEnclaveAuditor } from "./components/ConfidentialEnclaveAuditor";
+import { OmniChainBridge } from "./components/OmniChainBridge";
 import { piService } from "./services/piSdk";
 import { HumanTask, ProtocolStats, PioneerUser, TabType } from "./types";
 import { INITIAL_PIONEER, INITIAL_PROTOCOL_STATS, INITIAL_TASKS } from "./data/mockData";
@@ -289,6 +295,96 @@ export default function App() {
 
         {currentTab === "guardian" && (
           <AgentGuardianSandbox
+            pioneer={pioneer}
+            stats={stats}
+            onRewardClaim={(bounty) => {
+              setPioneer((prev) => ({
+                ...prev,
+                unpaidPiBalance: Number((prev.unpaidPiBalance + bounty).toFixed(2)),
+                piEarned: Number((prev.piEarned + bounty).toFixed(2)),
+                tasksCompleted: prev.tasksCompleted + 1,
+              }));
+            }}
+          />
+        )}
+
+        {currentTab === "rlhf_studio" && (
+          <FederatedRlhfStudio
+            pioneer={pioneer}
+            stats={stats}
+            onRewardClaim={(bounty) => {
+              setPioneer((prev) => ({
+                ...prev,
+                unpaidPiBalance: Number((prev.unpaidPiBalance + bounty).toFixed(2)),
+                piEarned: Number((prev.piEarned + bounty).toFixed(2)),
+                tasksCompleted: prev.tasksCompleted + 1,
+              }));
+            }}
+          />
+        )}
+
+        {currentTab === "cultural_matrix" && (
+          <CulturalLinguisticMatrix
+            pioneer={pioneer}
+            stats={stats}
+            onRewardClaim={(bounty) => {
+              setPioneer((prev) => ({
+                ...prev,
+                unpaidPiBalance: Number((prev.unpaidPiBalance + bounty).toFixed(2)),
+                piEarned: Number((prev.piEarned + bounty).toFixed(2)),
+                tasksCompleted: prev.tasksCompleted + 1,
+              }));
+            }}
+          />
+        )}
+
+        {currentTab === "distillery" && (
+          <SyntheticDataDistillery
+            pioneer={pioneer}
+            stats={stats}
+            onRewardClaim={(bounty) => {
+              setPioneer((prev) => ({
+                ...prev,
+                unpaidPiBalance: Number((prev.unpaidPiBalance + bounty).toFixed(2)),
+                piEarned: Number((prev.piEarned + bounty).toFixed(2)),
+                tasksCompleted: prev.tasksCompleted + 1,
+              }));
+            }}
+          />
+        )}
+
+        {currentTab === "enclave" && (
+          <ConfidentialEnclaveAuditor
+            pioneer={pioneer}
+            stats={stats}
+            onRewardClaim={(bounty) => {
+              setPioneer((prev) => ({
+                ...prev,
+                unpaidPiBalance: Number((prev.unpaidPiBalance + bounty).toFixed(2)),
+                piEarned: Number((prev.piEarned + bounty).toFixed(2)),
+                tasksCompleted: prev.tasksCompleted + 1,
+              }));
+            }}
+          />
+        )}
+
+        {currentTab === "bridge" && (
+          <OmniChainBridge
+            pioneer={pioneer}
+            stats={stats}
+            onRewardClaim={(bounty) => {
+              setPioneer((prev) => ({
+                ...prev,
+                unpaidPiBalance: Number((prev.unpaidPiBalance + bounty).toFixed(2)),
+                piEarned: Number((prev.piEarned + bounty).toFixed(2)),
+                tasksCompleted: prev.tasksCompleted + 1,
+              }));
+            }}
+          />
+        )}
+
+        {currentTab === "governance" && (
+          <GovernanceDao
             pioneer={pioneer}
             stats={stats}
             onRewardClaim={(bounty) => {
