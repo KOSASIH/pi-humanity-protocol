@@ -1,26 +1,24 @@
-<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width, initial-scale=1">
-<script src="https://sdk.minepi.com/pi-sdk.js"></script><script>Pi.init({version:"2.0",sandbox:true})</script></head>
-<body style="background:#111;color:#fff;text-align:center;padding:40px;font-family:sans-serif">
-<h2>HUMANITY PROTOCOL - Pi Testnet Payment v2</h2>
-<button onclick="pay()" style="padding:20px 40px;background:#ffcc00;font-size:20px;border-radius:12px;font-weight:bold">PAY 1 TEST-PI (AUTO)</button><p id="log"></p>
-<script>
+<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"><script src="https://sdk.minepi.com/pi-sdk.js"></script><script>Pi.init({version:"2.0",sandbox:true})</script></head><body style="background:#0f172a;color:#fff;text-align:center;padding:40px;font-family:sans-serif"><h2>Humanity Protocol - Pi AUTO</h2><button onclick="pay()" style="padding:20px 40px;background:#facc15;font-size:20px;border-radius:12px;font-weight:bold;color:#000">PAY 1 TEST-PI</button><p id="log" style="margin-top:20px;font-size:18px"></p><script>
 async function pay(){
  try{
+  log("Authenticating...");
   await Pi.authenticate(['payments'],()=>{});
-  document.getElementById('log').innerText="Creating...";
-  await Pi.createPayment({amount:1,memo:"Humanity Protocol Verification",metadata:{type:"verification"}},{
+  log("Creating payment...");
+  await Pi.createPayment({amount:1,memo:"Humanity Protocol Test",metadata:{type:"verify"}},{
    onReadyForServerApproval: async (id)=>{
-    document.getElementById('log').innerText="Approving "+id+"...";
-    await fetch('/api/approve',{method:'POST',body:JSON.stringify({paymentId:id})});
+    log("Approving "+id+"...");
+    const r=await fetch('/api/approve',{method:'POST',body:JSON.stringify({paymentId:id})});
+    const j=await r.json(); log("Approved! "+JSON.stringify(j).slice(0,100));
    },
    onReadyForServerCompletion: async (id,txid)=>{
-    document.getElementById('log').innerText="Completing... "+txid;
-    await fetch('/api/complete',{method:'POST',body:JSON.stringify({paymentId:id,txid})});
-    document.getElementById('log').innerText="✅ SUCCESS! Go refresh develop.pi - IT WILL BE GREEN!";
+    log("Completing "+txid+"...");
+    const r=await fetch('/api/complete',{method:'POST',body:JSON.stringify({paymentId:id,txid})});
+    const j=await r.json(); log("✅ SUCCESS! "+JSON.stringify(j).slice(0,200));
    },
-   onCancel: (id)=>{document.getElementById('log').innerText="Cancel "+id},
-   onError: (e)=>{document.getElementById('log').innerText="Error "+e.message}
+   onCancel: (id)=>log("Cancelled "+id),
+   onError: (e)=>log("Error "+e)
   });
- }catch(e){document.getElementById('log').innerText="Error "+e}
+ }catch(e){log("Err "+e)}
 }
+function log(m){document.getElementById('log').innerText=m; console.log(m);}
 </script></body></html>
