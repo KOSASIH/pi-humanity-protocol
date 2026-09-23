@@ -5,14 +5,13 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
 
   try {
-    // IMPORT DI DALAM HANDLER — biar gak bikin FUNCTION_INVOCATION_FAILED
-    const { Server, Keypair, Asset, Operation, TransactionBuilder, BASE_FEE } = await import('@stellar/stellar-sdk');
+    const { Horizon, Keypair, Asset, Operation, TransactionBuilder, BASE_FEE } = await import('@stellar/stellar-sdk');
     
     const secret = process.env.APP_WALLET_SECRET;
-    if (!secret) return res.status(500).json({ error: "APP_WALLET_SECRET belum di set di Vercel > Settings > Env" });
+    if (!secret) return res.status(500).json({ error: "APP_WALLET_SECRET belum di set di Vercel" });
 
     const FOUNDER = "GCKUNNC6X6LKYJXKTQEJAQQ2J6NTIHMRNJFM2KY6KIBB46BOPMKVXDQN";
-    const server = new Server("https://api.testnet.minepi.com");
+    const server = new Horizon.Server("https://api.testnet.minepi.com");
     const source = Keypair.fromSecret(secret.trim());
     const account = await server.loadAccount(source.publicKey());
 
