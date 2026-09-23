@@ -666,7 +666,7 @@ async function startServer() {
         blockAnchor: 1894218,
         pioneerRewardPerCheck: "0.8 Pi",
         euAiActCertificate: {
-          token: `EU-AIA-2024-ARTICLE14-HUMAN-IN-THE-LOOP-${crypto.randomUUID().slice(0, 8).toUpperCase()}`,
+          token: `${process.env.EU_AIA_CERT_TOKEN}-${crypto.randomUUID()}`
           complianceArticle: "EU AI Act Article 14 (Human Oversight)",
           status: "COMPLIANT_HUMAN_OVERSIGHT",
           verifiedPioneersCount: parsedCount,
