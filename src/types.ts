@@ -142,6 +142,9 @@ export interface ProtocolStats {
   avgConsensusSeconds: number;
   latestBlock: number;
   piNetworkMainnetStatus: 'HEALTHY' | 'SYNCED';
+  totalStakedPi?: number;
+  byzantineToleranceRatio?: number;
+  oracleQueriesServed?: number;
   liveActivityPings: {
     id: string;
     pioneer: string;

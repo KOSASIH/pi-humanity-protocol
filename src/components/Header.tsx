@@ -21,6 +21,7 @@ interface HeaderProps {
   isPiBrowser: boolean;
   onClaimPayout?: () => void;
   isClaiming?: boolean;
+  onSignIn?: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -30,6 +31,7 @@ export const Header: React.FC<HeaderProps> = ({
   isPiBrowser,
   onClaimPayout,
   isClaiming,
+  onSignIn,
 }) => {
   return (
     <header className="sticky top-0 z-40 bg-slate-950/90 backdrop-blur-md border-b border-slate-800/80">
@@ -127,8 +129,12 @@ export const Header: React.FC<HeaderProps> = ({
 
           {/* Pioneer Status & Balance */}
           <div className="flex items-center gap-2 sm:gap-3">
-            {/* KYC Pill */}
-            <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 text-xs">
+            {/* KYC Pill / Sign-in */}
+            <button
+              onClick={onSignIn}
+              title="Pi Network Authenticated via App Studio. Click to re-verify identity."
+              className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800/80 border border-slate-800 text-xs transition-colors cursor-pointer text-left"
+            >
               <span className="text-base" title={pioneer.country}>{pioneer.countryFlag}</span>
               <div className="flex flex-col">
                 <span className="text-slate-200 font-mono text-[11px] font-semibold">@{pioneer.username}</span>
@@ -140,9 +146,9 @@ export const Header: React.FC<HeaderProps> = ({
               </div>
               <span className="inline-flex items-center gap-0.5 text-[10px] font-semibold text-emerald-400 bg-emerald-950/60 px-1.5 py-0.5 rounded border border-emerald-500/20">
                 <ShieldCheck className="w-3 h-3 text-emerald-400" />
-                KYC Tier 2
+                Pi Auth
               </span>
-            </div>
+            </button>
 
             {/* Trust Score */}
             <div className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 text-xs">

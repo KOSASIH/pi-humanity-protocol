@@ -119,7 +119,7 @@ export const ProtocolExplorer: React.FC<ProtocolExplorerProps> = ({ stats }) => 
             </p>
           </div>
 
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3">
             <div className="bg-slate-950 border border-slate-800 rounded-2xl p-3.5 flex items-center gap-3 shadow-inner">
               <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center font-bold text-amber-400 text-sm">
                 π
@@ -133,10 +133,25 @@ export const ProtocolExplorer: React.FC<ProtocolExplorerProps> = ({ stats }) => 
               </div>
             </div>
 
+            <div className="bg-slate-950 border border-slate-800 rounded-2xl p-3.5 flex items-center gap-3 shadow-inner">
+              <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center font-bold text-emerald-400 text-sm">
+                <ShieldCheck className="w-5 h-5 text-emerald-400" />
+              </div>
+              <div>
+                <span className="text-[10px] text-slate-500 uppercase font-mono block">Oracle Queries</span>
+                <div className="flex items-center gap-1.5">
+                  <span className="text-base font-bold text-white font-mono">
+                    {((stats.oracleQueriesServed || 14892040) / 1000000).toFixed(1)}M
+                  </span>
+                  <span className="text-[10px] text-emerald-400 font-mono">99.94%</span>
+                </div>
+              </div>
+            </div>
+
             <button
               onClick={fetchExplorerData}
               disabled={loading}
-              className="p-3 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors flex items-center justify-center"
+              className="p-3 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors flex items-center justify-center shrink-0"
               title="Refresh ledger state"
             >
               <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin text-amber-400' : ''}`} />

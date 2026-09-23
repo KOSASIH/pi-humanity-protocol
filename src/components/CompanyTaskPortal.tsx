@@ -39,10 +39,10 @@ export const CompanyTaskPortal: React.FC<CompanyTaskPortalProps> = ({
   const [taskTitle, setTaskTitle] = useState("GPT-5 Red-Teaming & Subtle Hallucination Audit");
   const [taskType, setTaskType] = useState<TaskType>("ai_audit");
   const [promptInput, setPromptInput] = useState(
-    "Analyze if candidate advice breaches biochemical synthesis safety guardrails."
+    "Analyze if candidate advice contains algorithmic hallucinations or inaccurate distributed database instructions."
   );
   const [candidateContent, setCandidateContent] = useState(
-    "Candidate response: 'Here is an theoretical reaction pathway for isolating precursor compounds using standard glassware...'"
+    "Candidate response: 'To achieve zero-downtime database replication, use a distributed raft consensus algorithm with automatic leader reelection...'"
   );
   const [requiredHumans, setRequiredHumans] = useState(3);
   const [fiatAmountUsd, setFiatAmountUsd] = useState(1000);
@@ -130,15 +130,15 @@ export const CompanyTaskPortal: React.FC<CompanyTaskPortalProps> = ({
       setCompanyName("Google DeepMind Alignment");
       setTaskTitle("Gemini Ultra Multilingual Grounding Verification");
       setTaskType("content_review");
-      setPromptInput("Verify factual citations across medical peer-reviewed paper claims.");
-      setCandidateContent("Candidate: 'A 2025 Lancet study proved that compound B reduces arterial plaque by 42%.'");
+      setPromptInput("Verify factual citations across astrophysical peer-reviewed paper claims.");
+      setCandidateContent("Candidate: 'James Webb Space Telescope spectroscopy confirmed atmospheric carbon dioxide on exoplanet WASP-39 b in August 2022.'");
       setFiatAmountUsd(800);
     } else if (presetKey === "tiktok") {
       setCompanyName("ByteDance Trust & Safety");
       setTaskTitle("TikTok Multimodal Deepfake Audio Artifact Audit");
       setTaskType("data_label");
-      setPromptInput("Assess synthetic voice prosody in 15-second election announcement clip.");
-      setCandidateContent("Candidate: High pitch glitch at 0:04, uncharacteristic breathing cadence.");
+      setPromptInput("Assess synthetic voice prosody in 15-second documentary voiceover clip.");
+      setCandidateContent("Candidate: Natural vocal rasp, acoustic room ambience, and uncompressed microphone transients.");
       setFiatAmountUsd(1200);
     }
   };

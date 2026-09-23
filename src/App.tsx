@@ -41,8 +41,10 @@ export default function App() {
           setStats(statsData);
         }
 
-        // Fetch Pioneer Profile
-        const pioneerRes = await fetch("/api/v1/pioneer/profile");
+        // Fetch Pioneer Profile using verified STEP 2 session
+        const pioneerRes = await fetch("/api/v1/pioneer/profile", {
+          headers: piService.getAuthHeaders(),
+        });
         if (pioneerRes.ok) {
           const pioneerData = await pioneerRes.json();
           setPioneer(pioneerData);
@@ -79,7 +81,9 @@ export default function App() {
         const data = await res.json();
         setTasks(data);
       }
-      const pRes = await fetch("/api/v1/pioneer/profile");
+      const pRes = await fetch("/api/v1/pioneer/profile", {
+        headers: piService.getAuthHeaders(),
+      });
       if (pRes.ok) {
         const pData = await pRes.json();
         setPioneer(pData);
@@ -90,14 +94,16 @@ export default function App() {
   };
 
   const handleVote = async (taskId: string, itemId: string, choice: string) => {
+    // Identity is decided strictly by server from STEP 2 session token
     const res = await fetch(`/api/v1/tasks/${taskId}/vote`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        ...piService.getAuthHeaders(),
+      },
       body: JSON.stringify({
         itemId,
         choice,
-        pioneerUid: pioneer.uid,
-        pioneerUsername: pioneer.username,
       }),
     });
 
@@ -155,7 +161,9 @@ export default function App() {
       });
 
       // Update pioneer profile
-      const pRes = await fetch("/api/v1/pioneer/profile");
+      const pRes = await fetch("/api/v1/pioneer/profile", {
+        headers: piService.getAuthHeaders(),
+      });
       if (pRes.ok) {
         const pData = await pRes.json();
         setPioneer(pData);
@@ -163,7 +171,13 @@ export default function App() {
     } catch (err: any) {
       console.warn("Native Pi payment failed, attempting direct protocol settlement:", err);
       try {
-        const fallbackRes = await fetch("/api/v1/pioneer/claim", { method: "POST" });
+        const fallbackRes = await fetch("/api/v1/pioneer/claim", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            ...piService.getAuthHeaders(),
+          },
+        });
         if (fallbackRes.ok) {
           confetti({
             particleCount: 80,
@@ -171,7 +185,9 @@ export default function App() {
             origin: { y: 0.6 },
             colors: ["#f59e0b", "#10b981", "#ffffff"],
           });
-          const pRes = await fetch("/api/v1/pioneer/profile");
+          const pRes = await fetch("/api/v1/pioneer/profile", {
+            headers: piService.getAuthHeaders(),
+          });
           if (pRes.ok) {
             const pData = await pRes.json();
             setPioneer(pData);
@@ -185,6 +201,22 @@ export default function App() {
     }
   };
 
+  const handleSignIn = async () => {
+    try {
+      const authRes = await piService.authenticate();
+      setIsPiBrowser(authRes.isPiBrowser);
+      const pRes = await fetch("/api/v1/pioneer/profile", {
+        headers: piService.getAuthHeaders(),
+      });
+      if (pRes.ok) {
+        const pData = await pRes.json();
+        setPioneer(pData);
+      }
+    } catch (e) {
+      console.error("Sign in error:", e);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans selection:bg-amber-500/30 selection:text-amber-200">
       <Header
@@ -194,6 +226,7 @@ export default function App() {
         isPiBrowser={isPiBrowser}
         onClaimPayout={handleClaimPayout}
         isClaiming={isClaiming}
+        onSignIn={handleSignIn}
       />
 
       <main className="flex-1 pb-16">

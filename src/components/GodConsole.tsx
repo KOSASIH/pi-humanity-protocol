@@ -129,6 +129,54 @@ export const GodConsole: React.FC<GodConsoleProps> = ({ stats }) => {
         </div>
       </div>
 
+      {/* Protocol Staking, BFT & Oracle Telemetry Bar */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-slate-900/60 p-4 rounded-2xl border border-slate-800/80">
+        <div className="flex items-center gap-3">
+          <div className="w-9 h-9 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center font-bold text-amber-400 text-sm">
+            <Lock className="w-4 h-4 text-amber-400" />
+          </div>
+          <div>
+            <span className="text-[10px] text-slate-400 uppercase font-mono block">Active Staking Pool</span>
+            <div className="flex items-center gap-2">
+              <span className="font-mono font-bold text-white text-sm">
+                {((stats.totalStakedPi || 28450000) / 1000000).toFixed(1)}M π Staked
+              </span>
+              <span className="text-[10px] text-emerald-400 font-mono">APY 14.2%</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-3">
+          <div className="w-9 h-9 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center font-bold text-emerald-400 text-sm">
+            <ShieldCheck className="w-4 h-4 text-emerald-400" />
+          </div>
+          <div>
+            <span className="text-[10px] text-slate-400 uppercase font-mono block">Byzantine Tolerance</span>
+            <div className="flex items-center gap-2">
+              <span className="font-mono font-bold text-white text-sm">
+                {stats.byzantineToleranceRatio || 99.94}% Quorum
+              </span>
+              <span className="text-[10px] text-emerald-400 font-mono">Zero Sybils</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-3">
+          <div className="w-9 h-9 rounded-xl bg-blue-500/10 border border-blue-500/30 flex items-center justify-center font-bold text-blue-400 text-sm">
+            <Zap className="w-4 h-4 text-blue-400" />
+          </div>
+          <div>
+            <span className="text-[10px] text-slate-400 uppercase font-mono block">Mainnet Sync State</span>
+            <div className="flex items-center gap-2">
+              <span className="font-mono font-bold text-white text-sm">Block #{stats.latestBlock}</span>
+              <span className="px-1.5 py-0.5 rounded text-[9px] font-mono font-bold bg-emerald-950 text-emerald-300 border border-emerald-500/30">
+                100% HEALTHY
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Global Map & Live Working Pings */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         

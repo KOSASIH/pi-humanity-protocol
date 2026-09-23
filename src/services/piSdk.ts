@@ -9,12 +9,12 @@
 declare global {
   interface Window {
     Pi?: {
-      init: (options: { version: string; sandbox?: boolean }) => Promise<void>;
+      init: (options: { version: string }) => Promise<void>;
       authenticate: (
         scopes: string[],
-        onIncompletePaymentFound: (payment: any) => void
+        onIncompletePaymentFound?: (payment: any) => void
       ) => Promise<{ accessToken: string; user?: { uid: string; username: string } }>;
-      createPayment: (
+      createPayment?: (
         paymentData: {
           amount: number;
           memo: string;
@@ -50,7 +50,7 @@ class PiNetworkService {
 
   /**
    * STEP 1: Initialize Pi SDK v2.0
-   * No sandbox param as required.
+   * Do not pass "sandbox" - it is detected automatically now.
    */
   async init(): Promise<boolean> {
     if (this.isInitialized) return true;
@@ -77,7 +77,9 @@ class PiNetworkService {
   }
 
   /**
-   * STEP 1 & 2: Authenticate with Pi Browser and verify via Backend
+   * STEP 1: Call Pi.authenticate(["username"], onIncompletePaymentFound)
+   * STEP 2: Exchange accessToken with App Studio backend
+   * STEP 3: Store and return the issued session
    */
   async authenticate(): Promise<PiAuthResult> {
     const isPiAvailable = typeof window !== "undefined" && !!window.Pi && typeof window.Pi.authenticate === "function";
@@ -90,31 +92,36 @@ class PiNetworkService {
 
       return new Promise((resolve) => {
         try {
+          const onIncompletePaymentFound = (incompletePayment: any) => {
+            console.log("[Pi SDK] Found incomplete payment:", incompletePayment);
+          };
+
+          // Call Pi.authenticate(["username"], onIncompletePaymentFound)
           window.Pi!.authenticate(
-            ["username", "payments"],
-            (incompletePayment: any) => {
-              console.log("[Pi SDK] Found incomplete payment:", incompletePayment);
-              // Handle incomplete payments if any
-            }
+            ["username"],
+            onIncompletePaymentFound
           )
             .then(async (authData) => {
-              // Keep accessToken only - DO NOT trust uid/username from browser directly!
+              // Keep the accessToken. Ignore the uid and username beside it (they came from the browser).
               const accessToken = authData.accessToken;
               this.currentAccessToken = accessToken;
 
-              // STEP 2: Call backend verification
-              const verifyRes = await fetch("/api/v1/auth/pi-verify", {
+              // STEP 2 & 3: Exchange accessToken with App Studio via our server
+              const loginRes = await fetch("/api/v1/auth/login", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ accessToken }),
               });
 
-              if (!verifyRes.ok) {
-                throw new Error("Backend verification failed");
+              if (!loginRes.ok) {
+                throw new Error("Backend authentication exchange failed");
               }
 
-              const backendData = await verifyRes.json();
+              const backendData = await loginRes.json();
               this.currentSessionToken = backendData.sessionToken;
+              if (typeof localStorage !== "undefined" && backendData.sessionToken) {
+                localStorage.setItem("pi_session_token", backendData.sessionToken);
+              }
 
               resolve({
                 accessToken,
@@ -126,7 +133,6 @@ class PiNetworkService {
             })
             .catch((err) => {
               console.warn("[Pi SDK] Authenticate error or outside Pi Browser context:", err);
-              // Fallback to verified protocol simulation mode
               this.getSimulationAuth().then(resolve);
             });
         } catch (err) {
@@ -140,24 +146,42 @@ class PiNetworkService {
   }
 
   /**
-   * Simulation mode for desktop browser preview
+   * Simulation mode for desktop browser preview / local environment
    */
   private async getSimulationAuth(): Promise<PiAuthResult> {
     const mockAccessToken = `pi_access_token_demo_${Math.random().toString(36).slice(2, 10)}`;
-    const verifyRes = await fetch("/api/v1/auth/pi-verify", {
+    const loginRes = await fetch("/api/v1/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ accessToken: mockAccessToken }),
     });
 
-    const data = await verifyRes.json();
+    const data = await loginRes.json();
+    this.currentSessionToken = data.sessionToken || "sess_demo_default";
+    if (typeof localStorage !== "undefined" && this.currentSessionToken) {
+      localStorage.setItem("pi_session_token", this.currentSessionToken);
+    }
+
     return {
       accessToken: mockAccessToken,
-      sessionToken: data.sessionToken || "pi_sess_mock_demo",
+      sessionToken: this.currentSessionToken || "sess_demo_default",
       user: data.user || { uid: "pi_kyc_89a2f1c841029c", username: "PioneerAlpha_94" },
       isPiBrowser: false,
       isSimulated: true,
     };
+  }
+
+  getSessionToken(): string | null {
+    if (this.currentSessionToken) return this.currentSessionToken;
+    if (typeof localStorage !== "undefined") {
+      return localStorage.getItem("pi_session_token");
+    }
+    return null;
+  }
+
+  getAuthHeaders(): Record<string, string> {
+    const token = this.getSessionToken();
+    return token ? { Authorization: `Bearer ${token}` } : {};
   }
 
   /**
@@ -179,7 +203,7 @@ class PiNetworkService {
 
       return new Promise((resolve, reject) => {
         try {
-          window.Pi!.createPayment(
+          window.Pi!.createPayment!(
             { amount, memo, metadata },
             {
               onReadyForServerApproval: async (paymentId: string) => {
@@ -220,7 +244,13 @@ class PiNetworkService {
   }
 
   private async claimViaBackend(): Promise<{ txid: string; status: string }> {
-    const res = await fetch("/api/v1/pioneer/claim", { method: "POST" });
+    const res = await fetch("/api/v1/pioneer/claim", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        ...this.getAuthHeaders(),
+      },
+    });
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || "Claim failed");
     return { txid: data.txid || `pi_tx_${Date.now()}`, status: "COMPLETED" };
