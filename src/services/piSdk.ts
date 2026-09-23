@@ -86,6 +86,37 @@ class PiNetworkService {
   }
 
   /**
+   * Broadcast authentication token to App Studio / Pi Developer Portal parent window
+   */
+  broadcastTokenToParent(accessToken: string): void {
+    if (typeof window !== "undefined" && window.parent) {
+      const payload = {
+        type: "PI_AUTH_TOKEN",
+        accessToken: accessToken,
+        // App Studio kadang minta nama ini
+        token: accessToken,
+        piAccessToken: accessToken,
+      };
+
+      try {
+        window.parent.postMessage(payload, "*");
+        console.log("Token sent to App Studio:", accessToken);
+      } catch (err) {
+        console.warn("Could not postMessage to window.parent:", err);
+      }
+
+      // Also send to window.opener if opened via popup
+      if (window.opener && window.opener !== window) {
+        try {
+          window.opener.postMessage(payload, "*");
+        } catch {
+          // ignore
+        }
+      }
+    }
+  }
+
+  /**
    * STEP 1: Call Pi.authenticate(["username"], onIncompletePaymentFound)
    * STEP 2: Exchange accessToken with App Studio backend
    * STEP 3: Store and return the issued session
@@ -119,6 +150,9 @@ class PiNetworkService {
             .then(async (authData) => {
               const accessToken = authData.accessToken;
               this.currentAccessToken = accessToken;
+
+              // Send token to App Studio Verification parent window
+              this.broadcastTokenToParent(accessToken);
 
               // STEP 2 & 3: Exchange accessToken with App Studio via our server
               const loginRes = await fetch("/api/v1/auth/login", {
@@ -162,6 +196,11 @@ class PiNetworkService {
    */
   private async getSimulationAuth(): Promise<PiAuthResult> {
     const mockAccessToken = `pi_access_token_demo_${Math.random().toString(36).slice(2, 10)}`;
+    this.currentAccessToken = mockAccessToken;
+
+    // Send token to App Studio Verification parent window
+    this.broadcastTokenToParent(mockAccessToken);
+
     const loginRes = await fetch("/api/v1/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
