@@ -160,8 +160,26 @@ export default function App() {
         const pData = await pRes.json();
         setPioneer(pData);
       }
-    } catch (err) {
-      console.error("Payout error:", err);
+    } catch (err: any) {
+      console.warn("Native Pi payment failed, attempting direct protocol settlement:", err);
+      try {
+        const fallbackRes = await fetch("/api/v1/pioneer/claim", { method: "POST" });
+        if (fallbackRes.ok) {
+          confetti({
+            particleCount: 80,
+            spread: 70,
+            origin: { y: 0.6 },
+            colors: ["#f59e0b", "#10b981", "#ffffff"],
+          });
+          const pRes = await fetch("/api/v1/pioneer/profile");
+          if (pRes.ok) {
+            const pData = await pRes.json();
+            setPioneer(pData);
+          }
+        }
+      } catch (fallbackErr) {
+        console.error("Payout fallback error:", fallbackErr);
+      }
     } finally {
       setIsClaiming(false);
     }
