@@ -5,7 +5,7 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
 
   try {
-    const { Horizon, Keypair, Asset, Operation, TransactionBuilder, BASE_FEE } = await import('@stellar/stellar-sdk');
+    const { Horizon, Keypair, Asset, Operation, TransactionBuilder } = await import('@stellar/stellar-sdk');
     
     const secret = process.env.APP_WALLET_SECRET;
     if (!secret) return res.status(500).json({ error: "APP_WALLET_SECRET belum di set di Vercel" });
@@ -16,7 +16,7 @@ export default async function handler(req, res) {
     const account = await server.loadAccount(source.publicKey());
 
     const tx = new TransactionBuilder(account, {
-      fee: BASE_FEE,
+      fee: "100000", // FIX: Pi Testnet butuh 0.01 Pi fee, bukan BASE_FEE
       networkPassphrase: "Pi Testnet"
     })
     .addOperation(Operation.payment({
