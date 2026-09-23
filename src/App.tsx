@@ -19,6 +19,10 @@ import { CulturalLinguisticMatrix } from "./components/CulturalLinguisticMatrix"
 import { SyntheticDataDistillery } from "./components/SyntheticDataDistillery";
 import { ConfidentialEnclaveAuditor } from "./components/ConfidentialEnclaveAuditor";
 import { OmniChainBridge } from "./components/OmniChainBridge";
+import { StripeFiatPiEngine } from "./components/StripeFiatPiEngine";
+import { AppStudioDiagnosticHub } from "./components/AppStudioDiagnosticHub";
+import { ModelSafetyIndex } from "./components/ModelSafetyIndex";
+import { SecurityCircleMesh } from "./components/SecurityCircleMesh";
 import { piService } from "./services/piSdk";
 import { HumanTask, ProtocolStats, PioneerUser, TabType } from "./types";
 import { INITIAL_PIONEER, INITIAL_PROTOCOL_STATS, INITIAL_TASKS } from "./data/mockData";
@@ -298,6 +302,60 @@ export default function App() {
             onClaimPayout={handleClaimPayout}
             isClaiming={isClaiming}
             refreshTasks={refreshTasks}
+          />
+        )}
+
+        {currentTab === "fiat_engine" && (
+          <StripeFiatPiEngine
+            pioneer={pioneer}
+            stats={stats}
+            onRefreshStats={refreshTasks}
+            onRewardClaim={(bounty) => {
+              setPioneer((prev) => ({
+                ...prev,
+                unpaidPiBalance: Number((prev.unpaidPiBalance + bounty).toFixed(2)),
+                piEarned: Number((prev.piEarned + bounty).toFixed(2)),
+                tasksCompleted: prev.tasksCompleted + 1,
+              }));
+            }}
+          />
+        )}
+
+        {currentTab === "app_studio_hub" && (
+          <AppStudioDiagnosticHub
+            pioneer={pioneer}
+            stats={stats}
+            isPiBrowser={isPiBrowser}
+          />
+        )}
+
+        {currentTab === "model_benchmarks" && (
+          <ModelSafetyIndex
+            pioneer={pioneer}
+            stats={stats}
+            onRewardClaim={(bounty) => {
+              setPioneer((prev) => ({
+                ...prev,
+                unpaidPiBalance: Number((prev.unpaidPiBalance + bounty).toFixed(2)),
+                piEarned: Number((prev.piEarned + bounty).toFixed(2)),
+                tasksCompleted: prev.tasksCompleted + 1,
+              }));
+            }}
+          />
+        )}
+
+        {currentTab === "security_mesh" && (
+          <SecurityCircleMesh
+            pioneer={pioneer}
+            stats={stats}
+            onRewardClaim={(bounty) => {
+              setPioneer((prev) => ({
+                ...prev,
+                unpaidPiBalance: Number((prev.unpaidPiBalance + bounty).toFixed(2)),
+                piEarned: Number((prev.piEarned + bounty).toFixed(2)),
+                tasksCompleted: prev.tasksCompleted + 1,
+              }));
+            }}
           />
         )}
 

@@ -6,6 +6,10 @@
 export type TabType = 
   | 'pioneer' 
   | 'company' 
+  | 'fiat_engine'
+  | 'app_studio_hub'
+  | 'model_benchmarks'
+  | 'security_mesh'
   | 'oracle'
   | 'forensics'
   | 'guardian'

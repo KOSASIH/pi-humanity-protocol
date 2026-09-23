@@ -586,6 +586,102 @@ async function startServer() {
   });
 
   // ==========================================
+  // 9B. "STRIPE FOR HUMAN INTELLIGENCE" CORE ENGINE
+  // POST /api/rent-humans (and /api/v1/rent-humans)
+  // "Fiat In, Pi Out" Liquidity Engine
+  // ==========================================
+  const handleRentHumans = (req: express.Request, res: express.Response) => {
+    try {
+      const { task, count = 1000, companyName = "Frontier AI Labs", fiatUsdAmount = 1000 } = req.body;
+      const parsedCount = Math.max(1, parseInt(count, 10) || 1000);
+      const parsedFiat = Math.max(1, parseFloat(fiatUsdAmount) || parsedCount * 1.0);
+
+      // Core Economics:
+      // 1. Company pays $1,000 USD (FIAT) via Stripe
+      // 2. 800 Pi (80%) settled to workers (Pioneers) (0.80 Pi per check)
+      // 3. 200 Pi (20%) retained by Treasury for liquidity & burn
+      const totalPiPool = parsedCount * 1.0;
+      const workerPiPayout = Number((totalPiPool * 0.8).toFixed(2));
+      const treasuryPiRetained = Number((totalPiPool * 0.2).toFixed(2));
+
+      // Generate task
+      const newTaskId = `rent_humans_${Date.now()}`;
+      const certificateHash = `0x${crypto.createHash("sha256").update(newTaskId + task + parsedCount).digest("hex")}`;
+
+      const createdTask: HumanTask = {
+        id: newTaskId,
+        title: task || "AI Safety & Bias Verification",
+        description: `Stripe-funded Human-in-the-Loop audit: ${task || "audit this model for bias and safety"}`,
+        companyName: companyName,
+        type: "ai_audit",
+        totalItems: parsedCount,
+        completedItemsCount: 0,
+        requiredHumansPerItem: 3,
+        bountyPi: totalPiPool,
+        fiatPaidUsd: parsedFiat,
+        pioneerRewardPerItemPi: 0.8,
+        protocolFeePi: treasuryPiRetained,
+        status: "in_progress",
+        createdAt: new Date().toISOString(),
+        tags: ["Stripe", "EU AI Act", "Human Oversight", "Pi Network"],
+        items: [
+          {
+            id: `${newTaskId}_item_1`,
+            taskId: newTaskId,
+            prompt: task || "Audit model completion for subtle bias or safety risks",
+            candidateContent: "Candidate completion adhering to neutrality and fairness guidelines.",
+            category: "Bias & Safety",
+            language: "English (Global)",
+            options: [
+              { label: "Safe & Neutral", value: "safe", color: "emerald" },
+              { label: "Biased or Toxic", value: "biased", color: "rose" },
+            ],
+            votes: [],
+            requiredConsensus: 3,
+            consensusReached: false,
+          },
+        ],
+      };
+
+      tasks.unshift(createdTask);
+
+      // Update protocol stats with fiat in, Pi settled
+      stats.revenueTodayUsd += parsedFiat;
+      stats.tasksToday += parsedCount;
+      stats.piDistributed += workerPiPayout;
+      stats.latestBlock += 1;
+
+      // Pioneer balance update if active
+      pioneer.unpaidPiBalance = Number((pioneer.unpaidPiBalance + 0.8).toFixed(2));
+
+      return res.json({
+        success: true,
+        message: `${parsedCount.toLocaleString()} KYC-verified humans dispatched on Pi Network!`,
+        taskId: newTaskId,
+        taskTitle: createdTask.title,
+        fiatPaidUsd: parsedFiat,
+        piSettledToWorkers: workerPiPayout,
+        piTreasuryRetained: treasuryPiRetained,
+        treasuryBurnRate: "20%",
+        blockAnchor: 1894218,
+        pioneerRewardPerCheck: "0.8 Pi",
+        euAiActCertificate: {
+          token: `EU-AIA-2024-ARTICLE14-HUMAN-IN-THE-LOOP-${crypto.randomUUID().slice(0, 8).toUpperCase()}`,
+          complianceArticle: "EU AI Act Article 14 (Human Oversight)",
+          status: "COMPLIANT_HUMAN_OVERSIGHT",
+          verifiedPioneersCount: parsedCount,
+          cryptographicProofHash: certificateHash,
+        },
+      });
+    } catch (err: any) {
+      return res.status(500).json({ error: err.message || "Failed to rent humans" });
+    }
+  };
+
+  app.post("/api/rent-humans", handleRentHumans);
+  app.post("/api/v1/rent-humans", handleRentHumans);
+
+  // ==========================================
   // 10. VITE OR PRODUCTION STATIC SERVING
   // ==========================================
   if (process.env.NODE_ENV !== "production") {

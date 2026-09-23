@@ -23,7 +23,11 @@ import {
   Languages,
   Vote,
   Database,
-  Network
+  Network,
+  CreditCard,
+  KeyRound,
+  Trophy,
+  Users
 } from "lucide-react";
 import { PioneerUser, TabType } from "../types";
 
@@ -48,6 +52,10 @@ export const Header: React.FC<HeaderProps> = ({
 }) => {
   const navTabs: { id: TabType; label: string; icon: React.ReactNode; categoryColor?: string }[] = [
     { id: "pioneer", label: "Pioneer Earner", icon: <Smartphone className="w-3.5 h-3.5" /> },
+    { id: "fiat_engine", label: "Stripe for AI", icon: <CreditCard className="w-3.5 h-3.5 text-indigo-400" />, categoryColor: "indigo" },
+    { id: "app_studio_hub", label: "App Studio Hub", icon: <KeyRound className="w-3.5 h-3.5 text-emerald-400" />, categoryColor: "emerald" },
+    { id: "model_benchmarks", label: "Model Arena", icon: <Trophy className="w-3.5 h-3.5 text-amber-400" />, categoryColor: "amber" },
+    { id: "security_mesh", label: "Security Mesh", icon: <Users className="w-3.5 h-3.5 text-teal-400" />, categoryColor: "teal" },
     { id: "company", label: "AI Portal", icon: <Building2 className="w-3.5 h-3.5" /> },
     { id: "oracle", label: "Truth Oracle", icon: <Sparkles className="w-3.5 h-3.5 text-indigo-400" />, categoryColor: "indigo" },
     { id: "forensics", label: "Deepfake Lab", icon: <Video className="w-3.5 h-3.5 text-cyan-400" />, categoryColor: "cyan" },
@@ -82,15 +90,15 @@ export const Header: React.FC<HeaderProps> = ({
             <div>
               <div className="flex items-center gap-2">
                 <span className="font-extrabold text-lg sm:text-xl tracking-tight text-white flex items-center gap-1.5">
-                  PI HUMANITY <span className="text-amber-400">PROTOCOL</span>
+                  HUMANITY PROTOCOL <span className="text-amber-400">LAYER</span>
                 </span>
-                <span className="hidden sm:inline-flex items-center px-2 py-0.5 rounded text-[11px] font-mono font-medium bg-amber-500/10 text-amber-300 border border-amber-500/20">
-                  humanity.pi
+                <span className="hidden sm:inline-flex items-center px-2 py-0.5 rounded text-[10px] font-mono font-medium bg-amber-500/10 text-amber-300 border border-amber-500/20">
+                  humanitylayer.pinet.com
                 </span>
               </div>
               <p className="text-[11px] sm:text-xs text-slate-400 flex items-center gap-1.5">
                 <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                60M Verified Humans Powering Every AI
+                Stripe for Human Intelligence on Pi &bull; 60M Verified Humans
               </p>
             </div>
           </div>
