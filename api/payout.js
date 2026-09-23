@@ -1,5 +1,6 @@
-import pkg from 'stellar-sdk';
-const { Server, Keypair, Asset, Operation, TransactionBuilder, BASE_FEE } = pkg;
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+const StellarSdk = require('stellar-sdk');
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -12,17 +13,18 @@ export default async function handler(req, res) {
     if (!secret) return res.status(500).json({ error: "APP_WALLET_SECRET belum di set di Vercel" });
 
     const FOUNDER = "GCKUNNC6X6LKYJXKTQEJAQQ2J6NTIHMRNJFM2KY6KIBB46BOPMKVXDQN";
-    const server = new Server("https://api.testnet.minepi.com");
-    const source = Keypair.fromSecret(secret.trim());
+    
+    const server = new StellarSdk.Server("https://api.testnet.minepi.com");
+    const source = StellarSdk.Keypair.fromSecret(secret.trim());
     const account = await server.loadAccount(source.publicKey());
 
-    const tx = new TransactionBuilder(account, {
-      fee: BASE_FEE,
+    const tx = new StellarSdk.TransactionBuilder(account, {
+      fee: StellarSdk.BASE_FEE,
       networkPassphrase: "Pi Testnet"
     })
-    .addOperation(Operation.payment({
+    .addOperation(StellarSdk.Operation.payment({
       destination: FOUNDER,
-      asset: Asset.native(),
+      asset: StellarSdk.Asset.native(),
       amount: "0.09"
     }))
     .setTimeout(30)
@@ -30,6 +32,7 @@ export default async function handler(req, res) {
 
     tx.sign(source);
     const result = await server.submitTransaction(tx);
+
     return res.json({ success: true, hash: result.hash, from: source.publicKey(), to: FOUNDER });
 
   } catch (e) {
