@@ -10,6 +10,8 @@ export type TabType =
   | 'app_studio_hub'
   | 'model_benchmarks'
   | 'security_mesh'
+  | 'edge_node'
+  | 'insurance_vault'
   | 'oracle'
   | 'forensics'
   | 'guardian'

@@ -27,7 +27,9 @@ import {
   CreditCard,
   KeyRound,
   Trophy,
-  Users
+  Users,
+  Server,
+  Gavel
 } from "lucide-react";
 import { PioneerUser, TabType } from "../types";
 
@@ -56,6 +58,8 @@ export const Header: React.FC<HeaderProps> = ({
     { id: "app_studio_hub", label: "App Studio Hub", icon: <KeyRound className="w-3.5 h-3.5 text-emerald-400" />, categoryColor: "emerald" },
     { id: "model_benchmarks", label: "Model Arena", icon: <Trophy className="w-3.5 h-3.5 text-amber-400" />, categoryColor: "amber" },
     { id: "security_mesh", label: "Security Mesh", icon: <Users className="w-3.5 h-3.5 text-teal-400" />, categoryColor: "teal" },
+    { id: "edge_node", label: "Edge Node", icon: <Server className="w-3.5 h-3.5 text-blue-400" />, categoryColor: "blue" },
+    { id: "insurance_vault", label: "AI Insurance", icon: <Gavel className="w-3.5 h-3.5 text-rose-400" />, categoryColor: "rose" },
     { id: "company", label: "AI Portal", icon: <Building2 className="w-3.5 h-3.5" /> },
     { id: "oracle", label: "Truth Oracle", icon: <Sparkles className="w-3.5 h-3.5 text-indigo-400" />, categoryColor: "indigo" },
     { id: "forensics", label: "Deepfake Lab", icon: <Video className="w-3.5 h-3.5 text-cyan-400" />, categoryColor: "cyan" },

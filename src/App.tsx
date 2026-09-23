@@ -23,6 +23,8 @@ import { StripeFiatPiEngine } from "./components/StripeFiatPiEngine";
 import { AppStudioDiagnosticHub } from "./components/AppStudioDiagnosticHub";
 import { ModelSafetyIndex } from "./components/ModelSafetyIndex";
 import { SecurityCircleMesh } from "./components/SecurityCircleMesh";
+import { EdgeWorkerNode } from "./components/EdgeWorkerNode";
+import { InsuranceEscrowVault } from "./components/InsuranceEscrowVault";
 import { piService } from "./services/piSdk";
 import { HumanTask, ProtocolStats, PioneerUser, TabType } from "./types";
 import { INITIAL_PIONEER, INITIAL_PROTOCOL_STATS, INITIAL_TASKS } from "./data/mockData";
@@ -346,6 +348,36 @@ export default function App() {
 
         {currentTab === "security_mesh" && (
           <SecurityCircleMesh
+            pioneer={pioneer}
+            stats={stats}
+            onRewardClaim={(bounty) => {
+              setPioneer((prev) => ({
+                ...prev,
+                unpaidPiBalance: Number((prev.unpaidPiBalance + bounty).toFixed(2)),
+                piEarned: Number((prev.piEarned + bounty).toFixed(2)),
+                tasksCompleted: prev.tasksCompleted + 1,
+              }));
+            }}
+          />
+        )}
+
+        {currentTab === "edge_node" && (
+          <EdgeWorkerNode
+            pioneer={pioneer}
+            stats={stats}
+            onRewardClaim={(bounty) => {
+              setPioneer((prev) => ({
+                ...prev,
+                unpaidPiBalance: Number((prev.unpaidPiBalance + bounty).toFixed(2)),
+                piEarned: Number((prev.piEarned + bounty).toFixed(2)),
+                tasksCompleted: prev.tasksCompleted + 1,
+              }));
+            }}
+          />
+        )}
+
+        {currentTab === "insurance_vault" && (
+          <InsuranceEscrowVault
             pioneer={pioneer}
             stats={stats}
             onRewardClaim={(bounty) => {
