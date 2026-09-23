@@ -77,12 +77,27 @@ class PiNetworkService {
   }
 
   /**
+   * Check if the application is running inside the official Pi Browser app
+   */
+  isPiBrowser(): boolean {
+    if (typeof window === "undefined" || !window.navigator) return false;
+    const ua = window.navigator.userAgent || "";
+    return /PiBrowser/i.test(ua) || /PiNetwork/i.test(ua);
+  }
+
+  /**
    * STEP 1: Call Pi.authenticate(["username"], onIncompletePaymentFound)
    * STEP 2: Exchange accessToken with App Studio backend
    * STEP 3: Store and return the issued session
    */
-  async authenticate(): Promise<PiAuthResult> {
+  async authenticate(forceSdkPrompt: boolean = false): Promise<PiAuthResult> {
+    const isPiApp = this.isPiBrowser();
     const isPiAvailable = typeof window !== "undefined" && !!window.Pi && typeof window.Pi.authenticate === "function";
+
+    // In a standard desktop/mobile browser preview outside Pi Browser, use local simulation unless forced
+    if (!isPiApp && !forceSdkPrompt) {
+      return this.getSimulationAuth();
+    }
 
     if (isPiAvailable) {
       const initialized = await this.init();
@@ -102,7 +117,6 @@ class PiNetworkService {
             onIncompletePaymentFound
           )
             .then(async (authData) => {
-              // Keep the accessToken. Ignore the uid and username beside it (they came from the browser).
               const accessToken = authData.accessToken;
               this.currentAccessToken = accessToken;
 
@@ -114,7 +128,7 @@ class PiNetworkService {
               });
 
               if (!loginRes.ok) {
-                throw new Error("Backend authentication exchange failed");
+                throw new Error("Backend authentication exchange returned non-200");
               }
 
               const backendData = await loginRes.json();
@@ -131,12 +145,10 @@ class PiNetworkService {
                 isSimulated: false,
               });
             })
-            .catch((err) => {
-              console.warn("[Pi SDK] Authenticate error or outside Pi Browser context:", err);
+            .catch(() => {
               this.getSimulationAuth().then(resolve);
             });
-        } catch (err) {
-          console.warn("[Pi SDK] Synchronous authenticate error:", err);
+        } catch {
           this.getSimulationAuth().then(resolve);
         }
       });

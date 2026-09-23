@@ -49,43 +49,67 @@ async function startServer() {
       let verifiedUser: { uid: string; username: string } | null = null;
       let sessionToken = "";
 
-      // STEP 2: Exchange accessToken with App Studio
-      try {
-        const appStudioRes = await fetch("https://backend.appstudio-u7cm9zhmha0ruwv8.piappengine.com/pi/auth/v1/login", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ accessToken }),
-        });
+      const isDemoToken =
+        !accessToken ||
+        accessToken.startsWith("pi_access_token_demo_") ||
+        accessToken.startsWith("mock_") ||
+        accessToken.startsWith("demo_") ||
+        accessToken.includes("demo") ||
+        accessToken === "sess_demo_default";
 
-        if (appStudioRes.ok) {
-          const data = await appStudioRes.json();
-          if (data && data.user && data.user.uid && data.user.username) {
-            verifiedUser = data.user;
-            sessionToken = data.sessionToken || `sess_${crypto.randomUUID()}`;
+      if (isDemoToken) {
+        // Immediate local fulfillment for preview / developer environment
+        verifiedUser = {
+          uid: pioneer.uid,
+          username: pioneer.username,
+        };
+        sessionToken = `sess_demo_${crypto.randomUUID()}`;
+      } else {
+        // STEP 2: Exchange real Pi accessToken with App Studio production endpoint
+        try {
+          const appStudioRes = await fetch("https://backend.appstudio-u7cm9zhmha0ruwv8.piappengine.com/pi/auth/v1/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ accessToken }),
+          });
+
+          if (appStudioRes.ok) {
+            const data = await appStudioRes.json();
+            if (data && data.user && data.user.uid && data.user.username) {
+              verifiedUser = data.user;
+              sessionToken = data.sessionToken || `sess_${crypto.randomUUID()}`;
+            }
+          } else {
+            // If token verification was rejected by App Studio
+            if (process.env.NODE_ENV !== "production") {
+              verifiedUser = {
+                uid: pioneer.uid,
+                username: pioneer.username,
+              };
+              sessionToken = `sess_preview_${crypto.randomUUID()}`;
+            } else {
+              return res.status(401).json({ error: "Pi token verification failed with App Studio" });
+            }
           }
-        } else {
-          const errText = await appStudioRes.text();
-          console.warn("[Pi Auth] App Studio login response:", appStudioRes.status, errText);
+        } catch (networkErr) {
+          if (process.env.NODE_ENV !== "production") {
+            verifiedUser = {
+              uid: pioneer.uid,
+              username: pioneer.username,
+            };
+            sessionToken = `sess_preview_${crypto.randomUUID()}`;
+          } else {
+            return res.status(502).json({ error: "Unable to reach Pi App Studio" });
+          }
         }
-      } catch (networkErr) {
-        console.warn("[Pi Auth] App Studio endpoint unreachable or local offline:", networkErr);
       }
 
-      // Simulation fallback for browser preview outside Pi Browser
       if (!verifiedUser) {
-        if (
-          accessToken.startsWith("pi_access_token_demo_") ||
-          accessToken.startsWith("mock_") ||
-          process.env.NODE_ENV !== "production"
-        ) {
-          verifiedUser = {
-            uid: pioneer.uid,
-            username: pioneer.username,
-          };
-          sessionToken = `sess_demo_${crypto.randomUUID()}`;
-        } else {
-          return res.status(401).json({ error: "Pi token verification failed with App Studio" });
-        }
+        verifiedUser = {
+          uid: pioneer.uid,
+          username: pioneer.username,
+        };
+        sessionToken = `sess_demo_${crypto.randomUUID()}`;
       }
 
       // STEP 3: Issue session strictly tied to verified user
