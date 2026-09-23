@@ -1,7 +1,3 @@
-import { createRequire } from 'module';
-const require = createRequire(import.meta.url);
-const StellarSdk = require('stellar-sdk');
-
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
@@ -10,10 +6,12 @@ export default async function handler(req, res) {
 
   try {
     const secret = process.env.APP_WALLET_SECRET;
-    if (!secret) return res.status(500).json({ error: "APP_WALLET_SECRET belum di set di Vercel" });
+    if (!secret) return res.status(500).json({ error: "APP_WALLET_SECRET belum di set" });
+
+    // Load Stellar SDK dari CDN biar gak usah install
+    const StellarSdk = (await import('https://esm.sh/stellar-sdk@11.4.0')).default;
 
     const FOUNDER = "GCKUNNC6X6LKYJXKTQEJAQQ2J6NTIHMRNJFM2KY6KIBB46BOPMKVXDQN";
-    
     const server = new StellarSdk.Server("https://api.testnet.minepi.com");
     const source = StellarSdk.Keypair.fromSecret(secret.trim());
     const account = await server.loadAccount(source.publicKey());
@@ -32,7 +30,6 @@ export default async function handler(req, res) {
 
     tx.sign(source);
     const result = await server.submitTransaction(tx);
-
     return res.json({ success: true, hash: result.hash, from: source.publicKey(), to: FOUNDER });
 
   } catch (e) {
