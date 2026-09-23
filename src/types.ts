@@ -3,6 +3,18 @@
  * Domain: humanity.pi - "60 Million Verified Humans Powering Every AI"
  */
 
+export type TabType = 
+  | 'pioneer' 
+  | 'company' 
+  | 'god_console' 
+  | 'explorer' 
+  | 'staking' 
+  | 'compliance' 
+  | 'telemetry' 
+  | 'zk_proof' 
+  | 'red_teaming' 
+  | 'api';
+
 export type KycTier = 'tier_1' | 'tier_2' | 'unverified';
 
 export interface PioneerUser {

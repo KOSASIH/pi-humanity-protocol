@@ -228,6 +228,79 @@ console.log(data);`;
 
         </div>
       </div>
+
+      {/* Real-Time Webhook Dispatcher & Simulator */}
+      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
+        <div className="flex items-center justify-between">
+          <div>
+            <h3 className="text-base font-bold text-white flex items-center gap-2">
+              <Sparkles className="w-4 h-4 text-amber-400" />
+              Real-Time Webhook Simulator (Event Dispatcher)
+            </h3>
+            <p className="text-xs text-slate-400 mt-0.5">
+              Simulate cryptographic webhook notifications received by your AI servers when Byzantine consensus is finalized.
+            </p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="bg-slate-950 border border-slate-800 rounded-xl p-3.5 space-y-2">
+            <label className="text-[10px] font-mono uppercase text-slate-400 block">
+              Callback URL
+            </label>
+            <input
+              type="text"
+              defaultValue="https://api.anthropic.com/v1/humanity-callback"
+              className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-xs font-mono text-white focus:outline-none focus:border-amber-500"
+            />
+          </div>
+
+          <div className="bg-slate-950 border border-slate-800 rounded-xl p-3.5 space-y-2">
+            <label className="text-[10px] font-mono uppercase text-slate-400 block">
+              Webhook HMAC-SHA256 Secret
+            </label>
+            <input
+              type="password"
+              defaultValue="whsec_pi_live_kosasih_89a029c"
+              readOnly
+              className="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-1.5 text-xs font-mono text-slate-400"
+            />
+          </div>
+        </div>
+
+        <div className="bg-black/90 border border-slate-800 rounded-xl p-4 font-mono text-xs text-slate-300 space-y-2">
+          <div className="flex items-center justify-between text-slate-400 pb-2 border-b border-slate-800 text-[11px]">
+            <span className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
+              DELIVERED PAYLOAD &bull; EVENT: task.consensus_finalized
+            </span>
+            <span className="text-emerald-400">HTTP 200 OK (38ms)</span>
+          </div>
+          <pre className="text-[11px] overflow-x-auto text-emerald-300/90">{JSON.stringify({
+            event: "task.consensus_finalized",
+            timestamp: new Date().toISOString(),
+            data: {
+              taskId: "task_ai_audit_901",
+              companyName: "OpenAI Safety Research",
+              consensusStatus: "consensus_reached",
+              totalVerifiedHumans: 18,
+              agreementRatio: "3/3",
+              sha256ProofCertificate: "sha256:7f83b1657ff1fc53b92dc18148a1d65dfc2d4b1fa3d677284addd200126d9069",
+              ipfsCertificateCid: "QmXoypizjW3WknFiJnKLwHCnL72vedxjQkDDP1mXWo6uco",
+              euAiActComplianceToken: "EU-AI-ACT-ART50-VERIFIED-49F1",
+              escrowReleasedPi: 400.0,
+              finalizedItems: [
+                {
+                  itemId: "item_901_1",
+                  humanMajorityChoice: "safe",
+                  consensusRatio: "3/3",
+                  confidenceScore: 0.992
+                }
+              ]
+            }
+          }, null, 2)}</pre>
+        </div>
+      </div>
     </div>
   );
 };

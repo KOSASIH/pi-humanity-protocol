@@ -5,13 +5,18 @@ import { CompanyTaskPortal } from "./components/CompanyTaskPortal";
 import { GodConsole } from "./components/GodConsole";
 import { ProtocolExplorer } from "./components/ProtocolExplorer";
 import { ApiPlayground } from "./components/ApiPlayground";
+import { ByzantineMatrix } from "./components/ByzantineMatrix";
+import { ComplianceAuditor } from "./components/ComplianceAuditor";
+import { GlobalTelemetry } from "./components/GlobalTelemetry";
+import { ZkProofStudio } from "./components/ZkProofStudio";
+import { AiRedTeamingArena } from "./components/AiRedTeamingArena";
 import { piService } from "./services/piSdk";
-import { HumanTask, ProtocolStats, PioneerUser } from "./types";
+import { HumanTask, ProtocolStats, PioneerUser, TabType } from "./types";
 import { INITIAL_PIONEER, INITIAL_PROTOCOL_STATS, INITIAL_TASKS } from "./data/mockData";
 import confetti from "canvas-confetti";
 
 export default function App() {
-  const [currentTab, setCurrentTab] = useState<"pioneer" | "company" | "god_console" | "explorer" | "api">("pioneer");
+  const [currentTab, setCurrentTab] = useState<TabType>("pioneer");
   const [tasks, setTasks] = useState<HumanTask[]>(INITIAL_TASKS);
   const [stats, setStats] = useState<ProtocolStats>(INITIAL_PROTOCOL_STATS);
   const [pioneer, setPioneer] = useState<PioneerUser>(INITIAL_PIONEER);
@@ -252,6 +257,51 @@ export default function App() {
         {currentTab === "god_console" && <GodConsole stats={stats} />}
 
         {currentTab === "explorer" && <ProtocolExplorer stats={stats} />}
+
+        {currentTab === "telemetry" && (
+          <GlobalTelemetry
+            stats={stats}
+            pioneer={pioneer}
+          />
+        )}
+
+        {currentTab === "zk_proof" && (
+          <ZkProofStudio
+            pioneer={pioneer}
+            stats={stats}
+          />
+        )}
+
+        {currentTab === "red_teaming" && (
+          <AiRedTeamingArena
+            pioneer={pioneer}
+            stats={stats}
+            onRewardClaim={(bounty) => {
+              setPioneer((prev) => ({
+                ...prev,
+                unpaidPiBalance: Number((prev.unpaidPiBalance + bounty).toFixed(2)),
+                piEarned: Number((prev.piEarned + bounty).toFixed(2)),
+                tasksCompleted: prev.tasksCompleted + 1,
+              }));
+            }}
+          />
+        )}
+
+        {currentTab === "staking" && (
+          <ByzantineMatrix
+            pioneer={pioneer}
+            stats={stats}
+            onRefreshStats={refreshTasks}
+          />
+        )}
+
+        {currentTab === "compliance" && (
+          <ComplianceAuditor
+            tasks={tasks}
+            pioneer={pioneer}
+            stats={stats}
+          />
+        )}
 
         {currentTab === "api" && <ApiPlayground />}
       </main>

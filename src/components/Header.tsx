@@ -10,13 +10,18 @@ import {
   Smartphone,
   Building2,
   Activity,
-  Layers
+  Layers,
+  ShieldAlert,
+  Scale,
+  Globe2,
+  EyeOff,
+  Flame
 } from "lucide-react";
-import { PioneerUser } from "../types";
+import { PioneerUser, TabType } from "../types";
 
 interface HeaderProps {
-  currentTab: "pioneer" | "company" | "god_console" | "explorer" | "api";
-  setCurrentTab: (tab: "pioneer" | "company" | "god_console" | "explorer" | "api") => void;
+  currentTab: TabType;
+  setCurrentTab: (tab: TabType) => void;
   pioneer: PioneerUser;
   isPiBrowser: boolean;
   onClaimPayout?: () => void;
@@ -103,20 +108,85 @@ export const Header: React.FC<HeaderProps> = ({
             <button
               id="nav-explorer-tab"
               onClick={() => setCurrentTab("explorer")}
-              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+              className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
                 currentTab === "explorer"
                   ? "bg-amber-500 text-slate-950 shadow-md shadow-amber-500/20"
                   : "text-slate-300 hover:text-white hover:bg-slate-800/60"
               }`}
             >
               <Layers className="w-3.5 h-3.5" />
-              Explorer & Oracle
+              Explorer
+            </button>
+
+            <button
+              id="nav-telemetry-tab"
+              onClick={() => setCurrentTab("telemetry")}
+              className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+                currentTab === "telemetry"
+                  ? "bg-amber-500 text-slate-950 shadow-md shadow-amber-500/20"
+                  : "text-slate-300 hover:text-white hover:bg-slate-800/60"
+              }`}
+            >
+              <Globe2 className="w-3.5 h-3.5" />
+              Node Map
+            </button>
+
+            <button
+              id="nav-zk-tab"
+              onClick={() => setCurrentTab("zk_proof")}
+              className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+                currentTab === "zk_proof"
+                  ? "bg-purple-600 text-white shadow-md shadow-purple-600/20"
+                  : "text-slate-300 hover:text-white hover:bg-slate-800/60"
+              }`}
+            >
+              <EyeOff className="w-3.5 h-3.5" />
+              zk-SNARK
+            </button>
+
+            <button
+              id="nav-redteam-tab"
+              onClick={() => setCurrentTab("red_teaming")}
+              className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+                currentTab === "red_teaming"
+                  ? "bg-rose-600 text-white shadow-md shadow-rose-600/20"
+                  : "text-slate-300 hover:text-white hover:bg-slate-800/60"
+              }`}
+            >
+              <Flame className="w-3.5 h-3.5" />
+              Red Team
+            </button>
+
+            <button
+              id="nav-staking-tab"
+              onClick={() => setCurrentTab("staking")}
+              className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+                currentTab === "staking"
+                  ? "bg-amber-500 text-slate-950 shadow-md shadow-amber-500/20"
+                  : "text-slate-300 hover:text-white hover:bg-slate-800/60"
+              }`}
+            >
+              <ShieldAlert className="w-3.5 h-3.5" />
+              BFT Staking
+            </button>
+
+            <button
+              id="nav-compliance-tab"
+              onClick={() => setCurrentTab("compliance")}
+              className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+                currentTab === "compliance"
+                  ? "bg-amber-500 text-slate-950 shadow-md shadow-amber-500/20"
+                  : "text-slate-300 hover:text-white hover:bg-slate-800/60"
+              }`}
+            >
+              <Scale className="w-3.5 h-3.5" />
+              EU AI Act
             </button>
 
             <button
               id="nav-api-tab"
               onClick={() => setCurrentTab("api")}
-              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+              className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all ${
                 currentTab === "api"
                   ? "bg-amber-500 text-slate-950 shadow-md shadow-amber-500/20"
                   : "text-slate-300 hover:text-white hover:bg-slate-800/60"
@@ -226,13 +296,58 @@ export const Header: React.FC<HeaderProps> = ({
             Explorer
           </button>
           <button
+            onClick={() => setCurrentTab("telemetry")}
+            className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold whitespace-nowrap ${
+              currentTab === "telemetry" ? "bg-amber-500 text-slate-950" : "text-slate-400 hover:bg-slate-900"
+            }`}
+          >
+            <Globe2 className="w-3.5 h-3.5" />
+            Node Map
+          </button>
+          <button
+            onClick={() => setCurrentTab("zk_proof")}
+            className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold whitespace-nowrap ${
+              currentTab === "zk_proof" ? "bg-purple-600 text-white" : "text-slate-400 hover:bg-slate-900"
+            }`}
+          >
+            <EyeOff className="w-3.5 h-3.5" />
+            zk-SNARK
+          </button>
+          <button
+            onClick={() => setCurrentTab("red_teaming")}
+            className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold whitespace-nowrap ${
+              currentTab === "red_teaming" ? "bg-rose-600 text-white" : "text-slate-400 hover:bg-slate-900"
+            }`}
+          >
+            <Flame className="w-3.5 h-3.5" />
+            Red Team
+          </button>
+          <button
+            onClick={() => setCurrentTab("staking")}
+            className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold whitespace-nowrap ${
+              currentTab === "staking" ? "bg-amber-500 text-slate-950" : "text-slate-400 hover:bg-slate-900"
+            }`}
+          >
+            <ShieldAlert className="w-3.5 h-3.5" />
+            BFT Staking
+          </button>
+          <button
+            onClick={() => setCurrentTab("compliance")}
+            className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold whitespace-nowrap ${
+              currentTab === "compliance" ? "bg-amber-500 text-slate-950" : "text-slate-400 hover:bg-slate-900"
+            }`}
+          >
+            <Scale className="w-3.5 h-3.5" />
+            EU AI Act
+          </button>
+          <button
             onClick={() => setCurrentTab("api")}
             className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold whitespace-nowrap ${
               currentTab === "api" ? "bg-amber-500 text-slate-950" : "text-slate-400 hover:bg-slate-900"
             }`}
           >
             <Terminal className="w-3.5 h-3.5" />
-            API Specs
+            API
           </button>
         </div>
       </div>
