@@ -3,6 +3,11 @@
 
 > **Rent a Human, Not a Bot. The Human Layer for AI Safety & Compliance.**
 
+## 🚀 Latest Release: PCT Submission Ready
+**[📥 Download Pitch Deck PDF v1.0.0 (1.77 MB)](https://github.com/KOSASIH/pi-humanity-protocol/releases/download/v1.0.0-pct-deck/Pi-Humanity-Protocol.pdf)** | Built in Cijoho, Kuningan, Jawa Barat
+
+> The EU AI Act Article 14 Compliance Layer for Pi Network - 1000+ AI Apps will be illegal in EU without this.
+
 [![Live on Vercel](https://img.shields.io/badge/Live-Vercel-black?style=for-the-badge)](https://pi-humanity-protocol.vercel.app)
 [![Pi Testnet](https://img.shields.io/badge/Pi-Testnet_Verified-8A2BE2?style=for-the-badge)](https://humanity-protocol-layer.testnet.minepi.com)
 [![Block Explorer](https://img.shields.io/badge/Block-%231894218-gold?style=for-the-badge)](https://blockexplorer.minepi.com/testnet/block/1894218)
