@@ -14,6 +14,8 @@ export type TabType =
   | 'insurance_vault'
   | 'agent_bounty'
   | 'data_auction'
+  | 'prompt_foundry'
+  | 'watermark_detector'
   | 'oracle'
   | 'forensics'
   | 'guardian'

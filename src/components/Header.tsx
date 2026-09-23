@@ -29,7 +29,9 @@ import {
   Trophy,
   Users,
   Server,
-  Gavel
+  Gavel,
+  Wand2,
+  Scan
 } from "lucide-react";
 import { PioneerUser, TabType } from "../types";
 
@@ -62,6 +64,8 @@ export const Header: React.FC<HeaderProps> = ({
     { id: "insurance_vault", label: "AI Insurance", icon: <Gavel className="w-3.5 h-3.5 text-rose-400" />, categoryColor: "rose" },
     { id: "agent_bounty", label: "Agent Sentinel", icon: <Bot className="w-3.5 h-3.5 text-indigo-400" />, categoryColor: "indigo" },
     { id: "data_auction", label: "Data Auction", icon: <Database className="w-3.5 h-3.5 text-amber-400" />, categoryColor: "amber" },
+    { id: "prompt_foundry", label: "Prompt Foundry", icon: <Wand2 className="w-3.5 h-3.5 text-indigo-400" />, categoryColor: "indigo" },
+    { id: "watermark_detector", label: "Sybil Watermark", icon: <Scan className="w-3.5 h-3.5 text-emerald-400" />, categoryColor: "emerald" },
     { id: "company", label: "AI Portal", icon: <Building2 className="w-3.5 h-3.5" /> },
     { id: "oracle", label: "Truth Oracle", icon: <Sparkles className="w-3.5 h-3.5 text-indigo-400" />, categoryColor: "indigo" },
     { id: "forensics", label: "Deepfake Lab", icon: <Video className="w-3.5 h-3.5 text-cyan-400" />, categoryColor: "cyan" },
