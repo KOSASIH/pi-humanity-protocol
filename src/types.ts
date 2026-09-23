@@ -12,6 +12,8 @@ export type TabType =
   | 'security_mesh'
   | 'edge_node'
   | 'insurance_vault'
+  | 'agent_bounty'
+  | 'data_auction'
   | 'oracle'
   | 'forensics'
   | 'guardian'

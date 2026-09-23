@@ -25,6 +25,8 @@ import { ModelSafetyIndex } from "./components/ModelSafetyIndex";
 import { SecurityCircleMesh } from "./components/SecurityCircleMesh";
 import { EdgeWorkerNode } from "./components/EdgeWorkerNode";
 import { InsuranceEscrowVault } from "./components/InsuranceEscrowVault";
+import { AgentBountySandbox } from "./components/AgentBountySandbox";
+import { DataAuctionMarketplace } from "./components/DataAuctionMarketplace";
 import { piService } from "./services/piSdk";
 import { HumanTask, ProtocolStats, PioneerUser, TabType } from "./types";
 import { INITIAL_PIONEER, INITIAL_PROTOCOL_STATS, INITIAL_TASKS } from "./data/mockData";
@@ -378,6 +380,36 @@ export default function App() {
 
         {currentTab === "insurance_vault" && (
           <InsuranceEscrowVault
+            pioneer={pioneer}
+            stats={stats}
+            onRewardClaim={(bounty) => {
+              setPioneer((prev) => ({
+                ...prev,
+                unpaidPiBalance: Number((prev.unpaidPiBalance + bounty).toFixed(2)),
+                piEarned: Number((prev.piEarned + bounty).toFixed(2)),
+                tasksCompleted: prev.tasksCompleted + 1,
+              }));
+            }}
+          />
+        )}
+
+        {currentTab === "agent_bounty" && (
+          <AgentBountySandbox
+            pioneer={pioneer}
+            stats={stats}
+            onRewardClaim={(bounty) => {
+              setPioneer((prev) => ({
+                ...prev,
+                unpaidPiBalance: Number((prev.unpaidPiBalance + bounty).toFixed(2)),
+                piEarned: Number((prev.piEarned + bounty).toFixed(2)),
+                tasksCompleted: prev.tasksCompleted + 1,
+              }));
+            }}
+          />
+        )}
+
+        {currentTab === "data_auction" && (
+          <DataAuctionMarketplace
             pioneer={pioneer}
             stats={stats}
             onRewardClaim={(bounty) => {
