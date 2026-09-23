@@ -1,5 +1,3 @@
-import { Server, Keypair, Asset, Operation, TransactionBuilder, BASE_FEE } from '@stellar/stellar-sdk';
-
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
@@ -7,8 +5,11 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
 
   try {
+    // IMPORT DI DALAM HANDLER — biar gak bikin FUNCTION_INVOCATION_FAILED
+    const { Server, Keypair, Asset, Operation, TransactionBuilder, BASE_FEE } = await import('@stellar/stellar-sdk');
+    
     const secret = process.env.APP_WALLET_SECRET;
-    if (!secret) return res.status(500).json({ error: "APP_WALLET_SECRET belum di set di Vercel" });
+    if (!secret) return res.status(500).json({ error: "APP_WALLET_SECRET belum di set di Vercel > Settings > Env" });
 
     const FOUNDER = "GCKUNNC6X6LKYJXKTQEJAQQ2J6NTIHMRNJFM2KY6KIBB46BOPMKVXDQN";
     const server = new Server("https://api.testnet.minepi.com");
@@ -29,10 +30,14 @@ export default async function handler(req, res) {
 
     tx.sign(source);
     const result = await server.submitTransaction(tx);
-    
     return res.json({ success: true, hash: result.hash, from: source.publicKey(), to: FOUNDER });
+
   } catch (e) {
     console.error("PAYOUT ERROR:", e);
-    return res.status(500).json({ error: e.message, detail: e?.response?.data || null });
+    return res.status(500).json({ 
+      error: e.message, 
+      stack: e.stack?.substring(0, 1000),
+      detail: e?.response?.data || null 
+    });
   }
 }
