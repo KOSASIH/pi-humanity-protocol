@@ -29,6 +29,8 @@ import { AgentBountySandbox } from "./components/AgentBountySandbox";
 import { DataAuctionMarketplace } from "./components/DataAuctionMarketplace";
 import { NeuralPromptFoundry } from "./components/NeuralPromptFoundry";
 import { SybilWatermarkDetector } from "./components/SybilWatermarkDetector";
+import { RoboticsTeleop } from "./components/RoboticsTeleop";
+import { DecentralizedApiGateway } from "./components/DecentralizedApiGateway";
 import { piService } from "./services/piSdk";
 import { HumanTask, ProtocolStats, PioneerUser, TabType } from "./types";
 import { INITIAL_PIONEER, INITIAL_PROTOCOL_STATS, INITIAL_TASKS } from "./data/mockData";
@@ -442,6 +444,36 @@ export default function App() {
 
         {currentTab === "watermark_detector" && (
           <SybilWatermarkDetector
+            pioneer={pioneer}
+            stats={stats}
+            onRewardClaim={(bounty) => {
+              setPioneer((prev) => ({
+                ...prev,
+                unpaidPiBalance: Number((prev.unpaidPiBalance + bounty).toFixed(2)),
+                piEarned: Number((prev.piEarned + bounty).toFixed(2)),
+                tasksCompleted: prev.tasksCompleted + 1,
+              }));
+            }}
+          />
+        )}
+
+        {currentTab === "robotics_teleop" && (
+          <RoboticsTeleop
+            pioneer={pioneer}
+            stats={stats}
+            onRewardClaim={(bounty) => {
+              setPioneer((prev) => ({
+                ...prev,
+                unpaidPiBalance: Number((prev.unpaidPiBalance + bounty).toFixed(2)),
+                piEarned: Number((prev.piEarned + bounty).toFixed(2)),
+                tasksCompleted: prev.tasksCompleted + 1,
+              }));
+            }}
+          />
+        )}
+
+        {currentTab === "api_gateway" && (
+          <DecentralizedApiGateway
             pioneer={pioneer}
             stats={stats}
             onRewardClaim={(bounty) => {

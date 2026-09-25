@@ -16,6 +16,8 @@ export type TabType =
   | 'data_auction'
   | 'prompt_foundry'
   | 'watermark_detector'
+  | 'robotics_teleop'
+  | 'api_gateway'
   | 'oracle'
   | 'forensics'
   | 'guardian'
