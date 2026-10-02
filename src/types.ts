@@ -53,6 +53,10 @@ export interface PioneerUser {
   unpaidPiBalance: number;
   isFounder?: boolean;
   founderRole?: string;
+  level?: string;
+  legendTitle?: string;
+  lastTxid?: string;
+  zkKycProofHash?: string;
   sessionToken?: string;
   isSimulated?: boolean;
 }
