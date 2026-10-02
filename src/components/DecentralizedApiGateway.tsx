@@ -19,7 +19,11 @@ import {
   Code2,
   Send,
   Eye,
-  Coins
+  Coins,
+  ShieldAlert,
+  CheckCircle2,
+  FileText,
+  Radio
 } from "lucide-react";
 import { PioneerUser, ProtocolStats } from "../types";
 
@@ -43,20 +47,20 @@ interface ApiKeyItem {
 const INITIAL_KEYS: ApiKeyItem[] = [
   {
     id: "key-1",
-    name: "Production Agent Cluster",
-    keyPrefix: "pi_live_sk_8f7b...4e12",
+    name: "Production Agent Cluster (Kosasih Node)",
+    keyPrefix: "pi_live_sk_prod_kosasih_78",
     created: "2026-09-18",
-    rateLimit: "1,200 req/min",
+    rateLimit: "2,500 req/min",
     totalCalls: 184520,
     piBilled: 142.50,
     status: "Active"
   },
   {
     id: "key-2",
-    name: "Staging Evaluation Engine",
-    keyPrefix: "pi_live_sk_2c9a...91b0",
+    name: "Sub-10ms Edge Inference Client",
+    keyPrefix: "pi_live_sk_sub10ms_mesh_4e12",
     created: "2026-09-21",
-    rateLimit: "300 req/min",
+    rateLimit: "1,200 req/min",
     totalCalls: 24190,
     piBilled: 18.25,
     status: "Active"
@@ -70,7 +74,7 @@ export const DecentralizedApiGateway: React.FC<DecentralizedApiGatewayProps> = (
 }) => {
   const [apiKeys, setApiKeys] = useState<ApiKeyItem[]>(INITIAL_KEYS);
   const [selectedModel, setSelectedModel] = useState("pi-gemini-2.5-human-hybrid");
-  const [selectedRegion, setSelectedRegion] = useState("Tokyo Edge #482 (60M Mesh)");
+  const [selectedRegion, setSelectedRegion] = useState("Tokyo Edge #482 (4.2ms - Cloudflare + 5.2M Pi Nodes)");
   const [humanIntercept, setHumanIntercept] = useState(true);
   const [promptInput, setPromptInput] = useState("Analyze biomedical contraindications for pediatric dosage of azithromycin.");
   const [isStreaming, setIsStreaming] = useState(false);
@@ -95,7 +99,7 @@ export const DecentralizedApiGateway: React.FC<DecentralizedApiGatewayProps> = (
       name: newKeyName,
       keyPrefix: `pi_live_sk_${randomHex}...${Math.random().toString(16).substring(2, 6)}`,
       created: new Date().toISOString().split("T")[0],
-      rateLimit: "600 req/min",
+      rateLimit: "1,000 req/min",
       totalCalls: 0,
       piBilled: 0,
       status: "Active"
@@ -110,14 +114,16 @@ export const DecentralizedApiGateway: React.FC<DecentralizedApiGatewayProps> = (
     setIsStreaming(true);
     setStreamedOutput("");
     
-    const mockFullText = `[Pi Humanity Protocol Gateway: Routed via ${selectedRegion}]
-[Human-in-the-Loop Intercept: ${humanIntercept ? "ACTIVE (Consensus Verified by 3 KYC Pioneers)" : "BYPASS"}]
+    const mockFullText = `[Pi Humanity Protocol Gateway: Routed via Cloudflare + Pi Sub-10ms Edge Mesh (${selectedRegion})]
+[Human-in-the-Loop Intercept: ${humanIntercept ? "ACTIVE (zk-SNARK Consensus Verified by 3 KYC Pioneers)" : "BYPASS"}]
+[zk-SNARK Proof: zk_snark_proof_0x8f9c2d1b7e4a5532c918ef04b901a]
+[Latency: 4.2ms | Anti-Sybil Guarantee: 100% Unforgeable]
 
-CLINICAL DETERMINATION:
+OUTPUT VERDICT:
 Pediatric administration of azithromycin requires weight-based titration (typically 10 mg/kg on Day 1, followed by 5 mg/kg on Days 2-5). Absolute contraindications include known hypersensitivity to macrolides, history of cholestatic jaundice or hepatic impairment associated with prior use. 
 
 PIONEER CONSENSUS VERIFICATION NOTE:
-All three independent validator nodes confirm no hallucinated dosing intervals found. Verified zero Sybil tampering. On-chain settlement hash: 0x9fbc...4412.`;
+All three independent validator nodes (Jakarta #01 @Kosasih78, Tokyo #482, Frankfurt #109) confirm no hallucinated dosing intervals found. Verified zero Sybil tampering. On-chain settlement hash: pi_tx_KOSASIH_99_2480 (Anchor Block #1894218). EU AI Act Article 14/50 compliance receipt logged.`;
 
     let currentIndex = 0;
     const startTime = Date.now();
@@ -246,6 +252,181 @@ func main() {
         </div>
       </div>
 
+      {/* World Map with 60M Dots & Sub-10ms Edge Mesh (Requirement 3 & 5) */}
+      <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 shadow-2xl relative overflow-hidden">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-4 mb-4">
+          <div>
+            <div className="flex items-center gap-2">
+              <Globe className="w-4 h-4 text-cyan-400" />
+              <h3 className="font-extrabold text-white text-base tracking-tight">
+                Global Sub-10ms Edge Mesh &bull; 60,000,000 Pioneer Dots
+              </h3>
+              <span className="px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 font-mono text-[10px] font-bold border border-cyan-500/30">
+                Cloudflare + Pi Validator Nodes
+              </span>
+            </div>
+            <p className="text-xs text-slate-400 mt-1">
+              Zero-latency Anycast edge routing. 60M biometric KYC-verified pioneers validating LLM completions across 230 countries.
+            </p>
+          </div>
+
+          <div className="flex items-center gap-3 text-xs font-mono">
+            <div className="flex items-center gap-1.5 text-emerald-400 bg-emerald-950/40 px-2.5 py-1 rounded-lg border border-emerald-500/30">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+              <span>Mesh Avg: 6.48ms</span>
+            </div>
+            <div className="flex items-center gap-1.5 text-amber-400 bg-amber-950/40 px-2.5 py-1 rounded-lg border border-amber-500/30">
+              <ShieldCheck className="w-3.5 h-3.5" />
+              <span>zk-SNARK Moat: 100% Active</span>
+            </div>
+          </div>
+        </div>
+
+        {/* SVG World Map with 60M Dots and Sub-10ms Edge Clusters */}
+        <div className="relative w-full h-64 sm:h-80 bg-slate-950 rounded-xl border border-slate-800/80 overflow-hidden flex items-center justify-center">
+          {/* Subtle grid lines */}
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e293b15_1px,transparent_1px),linear-gradient(to_bottom,#1e293b15_1px,transparent_1px)] bg-[size:2rem_2rem]" />
+          
+          <svg className="w-full h-full" viewBox="0 0 1000 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="mapGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.15" />
+                <stop offset="50%" stopColor="#f59e0b" stopOpacity="0.2" />
+                <stop offset="100%" stopColor="#10b981" stopOpacity="0.15" />
+              </linearGradient>
+              <radialGradient id="meshGlow" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stopColor="#06b6d4" stopOpacity="0.6" />
+                <stop offset="100%" stopColor="#06b6d4" stopOpacity="0" />
+              </radialGradient>
+            </defs>
+
+            {/* Dotted Continental Representation (60M Pioneers Density) */}
+            {/* North America */}
+            {[
+              [200, 140], [220, 130], [240, 150], [210, 170], [250, 180], [270, 160], [230, 200], [280, 190], [190, 180], [260, 210]
+            ].map(([cx, cy], i) => (
+              <circle key={`na-${i}`} cx={cx} cy={cy} r="3" fill="#64748b" opacity="0.6" />
+            ))}
+            {/* South America */}
+            {[
+              [320, 310], [340, 330], [350, 360], [330, 380], [360, 410], [340, 430]
+            ].map(([cx, cy], i) => (
+              <circle key={`sa-${i}`} cx={cx} cy={cy} r="3" fill="#64748b" opacity="0.6" />
+            ))}
+            {/* Europe */}
+            {[
+              [500, 140], [520, 130], [530, 150], [490, 160], [510, 170], [540, 160], [480, 180]
+            ].map(([cx, cy], i) => (
+              <circle key={`eu-${i}`} cx={cx} cy={cy} r="3" fill="#64748b" opacity="0.6" />
+            ))}
+            {/* Africa */}
+            {[
+              [520, 240], [510, 270], [540, 290], [530, 330], [550, 360], [560, 390], [490, 260]
+            ].map(([cx, cy], i) => (
+              <circle key={`af-${i}`} cx={cx} cy={cy} r="3" fill="#64748b" opacity="0.6" />
+            ))}
+            {/* Asia & Indonesia */}
+            {[
+              [680, 160], [720, 180], [750, 190], [710, 220], [740, 240], [780, 210], [800, 230], [760, 280], [770, 310], [790, 330], [810, 340], [820, 360]
+            ].map(([cx, cy], i) => (
+              <circle key={`as-${i}`} cx={cx} cy={cy} r="3.5" fill="#f59e0b" opacity="0.8" />
+            ))}
+
+            {/* Glowing Connection Vectors between Sub-10ms Gateways */}
+            <path d="M 220 180 Q 520 80 520 150" stroke="#06b6d4" strokeWidth="1.5" strokeDasharray="4 4" opacity="0.6" />
+            <path d="M 520 150 Q 640 180 760 280" stroke="#f59e0b" strokeWidth="1.5" strokeDasharray="4 4" opacity="0.7" />
+            <path d="M 760 280 Q 780 250 820 180" stroke="#10b981" strokeWidth="1.5" strokeDasharray="4 4" opacity="0.7" />
+            <path d="M 820 180 Q 520 280 220 180" stroke="#8b5cf6" strokeWidth="1" strokeDasharray="3 3" opacity="0.4" />
+
+            {/* 5 SUB-10MS CLUSTER HUBS */}
+            {/* 1. Tokyo Edge (4.2ms) */}
+            <g transform="translate(820, 180)">
+              <circle r="16" fill="url(#meshGlow)" className="animate-ping" />
+              <circle r="6" fill="#06b6d4" stroke="#ffffff" strokeWidth="2" />
+              <text x="12" y="4" fill="#67e8f9" fontSize="11" fontFamily="monospace" fontWeight="bold">Tokyo (4.2ms)</text>
+            </g>
+
+            {/* 2. Singapore Edge (5.1ms) */}
+            <g transform="translate(760, 280)">
+              <circle r="14" fill="url(#meshGlow)" className="animate-ping" />
+              <circle r="5" fill="#10b981" stroke="#ffffff" strokeWidth="2" />
+              <text x="12" y="4" fill="#6ee7b7" fontSize="11" fontFamily="monospace" fontWeight="bold">Singapore (5.1ms)</text>
+            </g>
+
+            {/* 3. Frankfurt Edge (6.8ms) */}
+            <g transform="translate(520, 150)">
+              <circle r="14" fill="url(#meshGlow)" className="animate-ping" />
+              <circle r="5" fill="#3b82f6" stroke="#ffffff" strokeWidth="2" />
+              <text x="-120" y="4" fill="#93c5fd" fontSize="11" fontFamily="monospace" fontWeight="bold">Frankfurt (6.8ms)</text>
+            </g>
+
+            {/* 4. San Francisco Edge (7.4ms) */}
+            <g transform="translate(220, 180)">
+              <circle r="14" fill="url(#meshGlow)" className="animate-ping" />
+              <circle r="5" fill="#8b5cf6" stroke="#ffffff" strokeWidth="2" />
+              <text x="-135" y="4" fill="#c4b5fd" fontSize="11" fontFamily="monospace" fontWeight="bold">San Francisco (7.4ms)</text>
+            </g>
+
+            {/* 5. Jakarta Authority Node (Kosasih 8.9ms) */}
+            <g transform="translate(780, 320)">
+              <circle r="18" fill="#f59e0b" fillOpacity="0.4" className="animate-pulse" />
+              <circle r="7" fill="#f59e0b" stroke="#ffffff" strokeWidth="2.5" />
+              <text x="14" y="5" fill="#fde047" fontSize="12" fontFamily="monospace" fontWeight="bold">Jakarta &bull; Kosasih Node (8.9ms)</text>
+            </g>
+          </svg>
+
+          {/* Map Overlay Badge */}
+          <div className="absolute bottom-3 left-3 bg-slate-900/90 border border-slate-800 rounded-lg px-3 py-1.5 text-[11px] font-mono flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-emerald-400" />
+            <span className="text-slate-300">All 5 Global Edge Cities &lt; 10ms Latency</span>
+          </div>
+
+          <div className="absolute bottom-3 right-3 bg-slate-900/90 border border-amber-500/30 rounded-lg px-3 py-1.5 text-[11px] font-mono text-amber-300 flex items-center gap-1.5">
+            <Lock className="w-3 h-3 text-amber-400" />
+            <span>zk-SNARK Anti-Sybil Consensus Engine</span>
+          </div>
+        </div>
+
+        {/* ZK-KYC Cryptographic Moat Feature Strip (Requirement 3) */}
+        <div className="mt-4 p-4 rounded-xl bg-gradient-to-r from-indigo-950/40 via-slate-950 to-amber-950/30 border border-indigo-500/30 grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+          <div className="flex items-start gap-2.5">
+            <div className="p-2 rounded-lg bg-indigo-500/20 text-indigo-400 shrink-0">
+              <ShieldCheck className="w-4 h-4" />
+            </div>
+            <div>
+              <h4 className="font-bold text-white mb-0.5">zk-SNARK KYC Proofs</h4>
+              <p className="text-slate-400 leading-relaxed text-[11px]">
+                Every single human evaluation vote generates an on-chain zk-SNARK of Pi KYC + wallet signature. Zero bot farm forgery possible.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-start gap-2.5">
+            <div className="p-2 rounded-lg bg-amber-500/20 text-amber-400 shrink-0">
+              <Lock className="w-4 h-4" />
+            </div>
+            <div>
+              <h4 className="font-bold text-white mb-0.5">Unbeatable 60M Moat</h4>
+              <p className="text-slate-400 leading-relaxed text-[11px]">
+                OpenAI, Google, and Anthropic have 0 biometric KYC humans. Only Pi Network possesses 60M verified individuals across 230 countries.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-start gap-2.5">
+            <div className="p-2 rounded-lg bg-emerald-500/20 text-emerald-400 shrink-0">
+              <Zap className="w-4 h-4" />
+            </div>
+            <div>
+              <h4 className="font-bold text-white mb-0.5">2-Second Finality</h4>
+              <p className="text-slate-400 leading-relaxed text-[11px]">
+                Escrow payouts execute in 2.0s via Pi Testnet/Mainnet ledger with automatic EU AI Act Article 14/50 audit compliance receipts.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Main Grid: Interactive Inference Gateway & Key Management */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         
@@ -285,11 +466,11 @@ func main() {
                   onChange={(e) => setSelectedRegion(e.target.value)}
                   className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500 font-mono"
                 >
-                  <option value="Tokyo Edge #482 (60M Mesh)">Tokyo Edge #482 (14ms)</option>
-                  <option value="Frankfurt Edge #109 (60M Mesh)">Frankfurt Edge #109 (18ms)</option>
-                  <option value="São Paulo Edge #73 (60M Mesh)">São Paulo Edge #73 (24ms)</option>
-                  <option value="Lagos Edge #210 (60M Mesh)">Lagos Edge #210 (22ms)</option>
-                  <option value="Singapore Edge #95 (60M Mesh)">Singapore Edge #95 (16ms)</option>
+                  <option value="Tokyo Edge #482 (Cloudflare + 5.2M Pi Nodes)">Tokyo Edge #482 (4.2ms - Sub-10ms)</option>
+                  <option value="Singapore Edge #95 (Cloudflare + 3.8M Pi Nodes)">Singapore Edge #95 (5.1ms - Sub-10ms)</option>
+                  <option value="Frankfurt Edge #109 (Cloudflare + 4.1M Pi Nodes)">Frankfurt Edge #109 (6.8ms - Sub-10ms)</option>
+                  <option value="San Francisco Edge #04 (Cloudflare + 6.3M Pi Nodes)">San Francisco Edge #04 (7.4ms - Sub-10ms)</option>
+                  <option value="Jakarta Edge #01 (Cloudflare + 7.1M Pi Nodes)">Jakarta &bull; Kosasih Node (8.9ms - Sub-10ms)</option>
                 </select>
               </div>
             </div>

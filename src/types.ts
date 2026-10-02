@@ -80,6 +80,8 @@ export interface TaskVote {
   choice: string;
   trustScore: number;
   timestamp: number;
+  zkSnarkProof?: string;
+  walletSignature?: string;
 }
 
 export interface TaskItem {
@@ -97,6 +99,11 @@ export interface TaskItem {
   consensusChoice?: string;
   agreementRatio?: string; // e.g. "3/3" or "2/3"
   isToxicOrViolating?: boolean;
+  isCriticalSecurityFlaw?: boolean;
+  criticalFlawTag?: string;
+  criticalRewardMultiplier?: number;
+  cweCode?: string;
+  zkSnarkProof?: string;
 }
 
 export interface HumanTask {

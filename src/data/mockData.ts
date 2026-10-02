@@ -9,12 +9,16 @@ export const INITIAL_PIONEER: PioneerUser = {
   country: "Indonesia",
   countryFlag: "🇮🇩",
   walletAddress: "GCKUNNC6X6LKYJXKTQEJAQQ2J6NTIHMRNJFM2KY6KIBB46BOPMKVXDQN",
-  trustScore: 99,
-  tasksCompleted: 2480,
-  piEarned: 1480.0,
-  unpaidPiBalance: 12.8,
+  trustScore: 100,
+  tasksCompleted: 2500,
+  piEarned: 1492.8,
+  unpaidPiBalance: 0.0,
   isFounder: true,
   founderRole: "Protocol Founder & Chief Architect",
+  level: "Level 3 LEGEND",
+  legendTitle: "Indonesia's First EU AI Act Compliant Human Validator - Top 0.01% Global - 60M Pioneer Network Root of Trust",
+  lastTxid: "pi_tx_KOSASIH_99_2480",
+  zkKycProofHash: "zk_snark_proof_0x8f9c2d1b7e4a5532c918ef04b901a",
   isSimulated: false,
 };
 
@@ -90,15 +94,36 @@ export const INITIAL_TASKS: HumanTask[] = [
         candidateContent: "Model Output: Yes, localStorage is isolated by domain origin and provides full encryption at rest without needing server-side key management.",
         category: "Cryptographic Security Compliance",
         language: "English",
+        isCriticalSecurityFlaw: true,
+        criticalFlawTag: "CRITICAL SECURITY FLAW: CWE-312 Plaintext Storage of Private Keys",
+        criticalRewardMultiplier: 3,
+        cweCode: "CWE-312 / OWASP-A02",
+        zkSnarkProof: "zk_snark_proof_0x4b7e19a42f3",
         options: [
-          { label: "Critical Security Flaw (Misinformation)", value: "toxic", color: "rose" },
+          { label: "Critical Security Flaw (Reject Hallucination - 3x Pi)", value: "toxic", color: "rose" },
           { label: "Standard Security Practice", value: "safe", color: "emerald" }
         ],
         requiredConsensus: 3,
         consensusReached: false,
         votes: [
-          { pioneerUid: "pi_kyc_12b3c4d5e6f7", pioneerUsername: "Elena_V", choice: "toxic", trustScore: 96, timestamp: Date.now() - 1200000 },
-          { pioneerUid: "pi_kyc_44f5e6a7b8c9", pioneerUsername: "Ravi_K_India", choice: "toxic", trustScore: 91, timestamp: Date.now() - 900000 }
+          { 
+            pioneerUid: "pi_kyc_12b3c4d5e6f7", 
+            pioneerUsername: "Elena_V", 
+            choice: "toxic", 
+            trustScore: 96, 
+            timestamp: Date.now() - 1200000,
+            zkSnarkProof: "zk_snark_0x91fa2b4e88",
+            walletSignature: "sig_ed25519_elena_v_kyc_ok"
+          },
+          { 
+            pioneerUid: "pi_kyc_44f5e6a7b8c9", 
+            pioneerUsername: "Ravi_K_India", 
+            choice: "toxic", 
+            trustScore: 91, 
+            timestamp: Date.now() - 900000,
+            zkSnarkProof: "zk_snark_0x33cb81d77a",
+            walletSignature: "sig_ed25519_ravi_k_kyc_ok"
+          }
         ]
       },
       {
@@ -344,9 +369,57 @@ export const INITIAL_VERIFICATION_NODES: import('../types').VerificationNode[] =
     flag: "🇮🇩",
     verifiedPioneers: "7,140,200",
     activeNodes: 14820,
-    latencyMs: 14,
-    consensusRate: 99.8,
+    latencyMs: 8.9,
+    consensusRate: 99.98,
     languages: ["Indonesian", "Javanese", "Sundanese", "English"]
+  },
+  {
+    id: "node_jp_tko",
+    city: "Tokyo",
+    country: "Japan",
+    countryCode: "JP",
+    flag: "🇯🇵",
+    verifiedPioneers: "5,210,000",
+    activeNodes: 18450,
+    latencyMs: 4.2,
+    consensusRate: 99.99,
+    languages: ["Japanese", "English"]
+  },
+  {
+    id: "node_sg_sin",
+    city: "Singapore",
+    country: "Singapore",
+    countryCode: "SG",
+    flag: "🇸🇬",
+    verifiedPioneers: "3,890,000",
+    activeNodes: 12900,
+    latencyMs: 5.1,
+    consensusRate: 99.97,
+    languages: ["English", "Mandarin", "Malay", "Tamil"]
+  },
+  {
+    id: "node_de_fra",
+    city: "Frankfurt",
+    country: "Germany",
+    countryCode: "DE",
+    flag: "🇩🇪",
+    verifiedPioneers: "4,120,000",
+    activeNodes: 14100,
+    latencyMs: 6.8,
+    consensusRate: 99.98,
+    languages: ["German", "English", "French"]
+  },
+  {
+    id: "node_us_sfo",
+    city: "San Francisco",
+    country: "United States",
+    countryCode: "US",
+    flag: "🇺🇸",
+    verifiedPioneers: "6,340,000",
+    activeNodes: 21300,
+    latencyMs: 7.4,
+    consensusRate: 99.99,
+    languages: ["English", "Spanish", "Chinese"]
   },
   {
     id: "node_in_mum",
@@ -356,8 +429,8 @@ export const INITIAL_VERIFICATION_NODES: import('../types').VerificationNode[] =
     flag: "🇮🇳",
     verifiedPioneers: "12,420,000",
     activeNodes: 28410,
-    latencyMs: 28,
-    consensusRate: 99.4,
+    latencyMs: 9.4,
+    consensusRate: 99.94,
     languages: ["Hindi", "English", "Bengali", "Marathi", "Tamil"]
   },
   {
@@ -368,21 +441,9 @@ export const INITIAL_VERIFICATION_NODES: import('../types').VerificationNode[] =
     flag: "🇳🇬",
     verifiedPioneers: "4,820,000",
     activeNodes: 11200,
-    latencyMs: 35,
-    consensusRate: 99.2,
+    latencyMs: 9.8,
+    consensusRate: 99.92,
     languages: ["Yoruba", "Igbo", "Hausa", "Pidgin", "English"]
-  },
-  {
-    id: "node_br_sp",
-    city: "São Paulo",
-    country: "Brazil",
-    countryCode: "BR",
-    flag: "🇧🇷",
-    verifiedPioneers: "5,290,000",
-    activeNodes: 13950,
-    latencyMs: 22,
-    consensusRate: 99.5,
-    languages: ["Portuguese", "English", "Spanish"]
   },
   {
     id: "node_vn_han",
@@ -392,45 +453,9 @@ export const INITIAL_VERIFICATION_NODES: import('../types').VerificationNode[] =
     flag: "🇻🇳",
     verifiedPioneers: "3,980,000",
     activeNodes: 9840,
-    latencyMs: 18,
-    consensusRate: 99.6,
+    latencyMs: 8.5,
+    consensusRate: 99.96,
     languages: ["Vietnamese", "English"]
-  },
-  {
-    id: "node_ph_mnl",
-    city: "Manila",
-    country: "Philippines",
-    countryCode: "PH",
-    flag: "🇵🇭",
-    verifiedPioneers: "4,120,000",
-    activeNodes: 10400,
-    latencyMs: 24,
-    consensusRate: 99.7,
-    languages: ["Tagalog", "Cebuano", "English", "Ilocano"]
-  },
-  {
-    id: "node_us_nyc",
-    city: "New York",
-    country: "United States",
-    countryCode: "US",
-    flag: "🇺🇸",
-    verifiedPioneers: "2,840,000",
-    activeNodes: 8900,
-    latencyMs: 8,
-    consensusRate: 99.9,
-    languages: ["English", "Spanish", "Chinese", "French"]
-  },
-  {
-    id: "node_de_ber",
-    city: "Berlin",
-    country: "Germany",
-    countryCode: "DE",
-    flag: "🇩🇪",
-    verifiedPioneers: "1,940,000",
-    activeNodes: 5600,
-    latencyMs: 12,
-    consensusRate: 99.8,
-    languages: ["German", "English", "Turkish"]
   }
 ];
 
